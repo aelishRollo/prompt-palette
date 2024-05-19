@@ -12,9 +12,26 @@ function truncateText(text, maxLength) {
 }
 
 chrome.runtime.onInstalled.addListener(() => {
+  // Create the parent context menu item
   chrome.contextMenus.create({
     id: "openPromptManager",
     title: "Open GPT Prompt Manager",
+    contexts: ["all"]
+  });
+
+  // Create context menu item for adding new prompts
+  chrome.contextMenus.create({
+    id: "addNewPrompt",
+    title: "Add New Prompt",
+    contexts: ["all"],
+    parentId: "openPromptManager"
+  });
+
+  // Create separator after "Add New Prompt"
+  chrome.contextMenus.create({
+    id: "separatorTop",
+    parentId: "openPromptManager",
+    type: "separator",
     contexts: ["all"]
   });
 
@@ -28,9 +45,9 @@ chrome.runtime.onInstalled.addListener(() => {
     });
   });
 
-  // Create context menu separator
+  // Create context menu separator for favorites
   chrome.contextMenus.create({
-    id: "separator",
+    id: "separatorFavorites",
     parentId: "openPromptManager",
     type: "separator",
     contexts: ["all"]
@@ -44,14 +61,6 @@ chrome.runtime.onInstalled.addListener(() => {
       title: truncateText(prompt.text, 50), // Truncate text for display
       contexts: ["all"]
     });
-  });
-
-  // Create context menu item for adding new prompts
-  chrome.contextMenus.create({
-    id: "addNewPrompt",
-    title: "Add New Prompt",
-    contexts: ["all"],
-    parentId: "openPromptManager"
   });
 });
 
@@ -70,7 +79,14 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       }
     });
   } else {
-    const prompt = defaultPrompts.find(p => `prompt_${p.id}` === info.menuItemId);
+    // Check if the clicked item is a known prompt
+    let prompt = defaultPrompts.find(p => `prompt_${p.id}` === info.menuItemId);
+
+    // If not found, check if it's a dynamically added prompt
+    if (!prompt) {
+      prompt = defaultPrompts.find(p => p.id === info.menuItemId);
+    }
+
     if (prompt) {
       const currentTime = new Date().getTime();
       const isDoubleClick = currentTime - lastClickTime < 300;
