@@ -11,56 +11,79 @@ function truncateText(text, maxLength) {
   return text.length > maxLength ? text.substring(0, maxLength - 3) + "..." : text;
 }
 
+// Function to save prompts to LocalStorage
+function savePromptsToLocalStorage(prompts) {
+  chrome.storage.local.set({ prompts: prompts }, () => {
+    console.log('Prompts saved to LocalStorage');
+  });
+}
+
+// Function to load prompts from LocalStorage
+function loadPromptsFromLocalStorage(callback) {
+  chrome.storage.local.get('prompts', (data) => {
+    if (data.prompts) {
+      callback(data.prompts);
+    } else {
+      callback(defaultPrompts);
+    }
+  });
+}
+
 chrome.runtime.onInstalled.addListener(() => {
-  // Create the parent context menu item
-  chrome.contextMenus.create({
-    id: "openPromptManager",
-    title: "Open GPT Prompt Manager",
-    contexts: ["all"]
-  });
-
-  // Create context menu item for adding new prompts
-  chrome.contextMenus.create({
-    id: "addNewPrompt",
-    title: "Add New Prompt",
-    contexts: ["all"],
-    parentId: "openPromptManager"
-  });
-
-  // Create separator after "Add New Prompt"
-  chrome.contextMenus.create({
-    id: "separatorTop",
-    parentId: "openPromptManager",
-    type: "separator",
-    contexts: ["all"]
-  });
-
-  // Create context menu items for favorite prompts
-  defaultPrompts.filter(prompt => prompt.favorite).forEach(prompt => {
+  // Load prompts from LocalStorage and create context menu items
+  loadPromptsFromLocalStorage((prompts) => {
     chrome.contextMenus.create({
-      id: `prompt_${prompt.id}`,
-      parentId: "openPromptManager",
-      title: `⭐ ${truncateText(prompt.text, 50)}`, // Truncate text for display
+      id: "openPromptManager",
+      title: "Open GPT Prompt Manager",
       contexts: ["all"]
     });
-  });
 
-  // Create context menu separator for favorites
-  chrome.contextMenus.create({
-    id: "separatorFavorites",
-    parentId: "openPromptManager",
-    type: "separator",
-    contexts: ["all"]
-  });
-
-  // Create context menu items for non-favorite prompts
-  defaultPrompts.filter(prompt => !prompt.favorite).forEach(prompt => {
+    // Create context menu item for adding new prompts
     chrome.contextMenus.create({
-      id: `prompt_${prompt.id}`,
+      id: "addNewPrompt",
+      title: "Add New Prompt",
+      contexts: ["all"],
+      parentId: "openPromptManager"
+    });
+
+    // Create separator after "Add New Prompt"
+    chrome.contextMenus.create({
+      id: "separatorTop",
       parentId: "openPromptManager",
-      title: truncateText(prompt.text, 50), // Truncate text for display
+      type: "separator",
       contexts: ["all"]
     });
+
+    // Create context menu items for favorite prompts
+    prompts.filter(prompt => prompt.favorite).forEach(prompt => {
+      chrome.contextMenus.create({
+        id: `prompt_${prompt.id}`,
+        parentId: "openPromptManager",
+        title: `⭐ ${truncateText(prompt.text, 50)}`, // Truncate text for display
+        contexts: ["all"]
+      });
+    });
+
+    // Create context menu separator for favorites
+    chrome.contextMenus.create({
+      id: "separatorFavorites",
+      parentId: "openPromptManager",
+      type: "separator",
+      contexts: ["all"]
+    });
+
+    // Create context menu items for non-favorite prompts
+    prompts.filter(prompt => !prompt.favorite).forEach(prompt => {
+      chrome.contextMenus.create({
+        id: `prompt_${prompt.id}`,
+        parentId: "openPromptManager",
+        title: truncateText(prompt.text, 50), // Truncate text for display
+        contexts: ["all"]
+      });
+    });
+
+    // Update the defaultPrompts array with the loaded prompts
+    defaultPrompts.splice(0, defaultPrompts.length, ...prompts);
   });
 });
 
@@ -134,10 +157,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     // Add the new prompt to the context menu
     chrome.contextMenus.create({
-      id: newPrompt.id,
+      id: `prompt_${newPrompt.id}`,
       parentId: "openPromptManager",
       title: truncateText(newPrompt.text, 50),
       contexts: ["all"]
     });
+
+    // Save the updated prompts to LocalStorage
+    savePromptsToLocalStorage(defaultPrompts);
   }
 });
