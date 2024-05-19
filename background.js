@@ -6,6 +6,8 @@ const defaultPrompts = [
   { id: "detailedSteps", text: "Provide detailed step-by-step instructions for achieving the desired outcome.", favorite: false }
 ];
 
+let selectedPrompts = [];
+
 // Function to truncate text for display
 function truncateText(text, maxLength) {
   return text.length > maxLength ? text.substring(0, maxLength - 3) + "..." : text;
@@ -82,6 +84,22 @@ chrome.runtime.onInstalled.addListener(() => {
       });
     });
 
+    // Add context menu item for copying selected prompts
+    chrome.contextMenus.create({
+      id: "copySelectedPrompts",
+      title: "Add Multiple Prompts to Clipboard",
+      contexts: ["all"],
+      parentId: "openPromptManager"
+    });
+
+    // Add context menu item for toggling favorites
+    chrome.contextMenus.create({
+      id: "toggleFavorite",
+      title: "Add or Remove Favorite",
+      contexts: ["all"],
+      parentId: "openPromptManager"
+    });
+
     // Update the defaultPrompts array with the loaded prompts
     defaultPrompts.splice(0, defaultPrompts.length, ...prompts);
   });
@@ -101,6 +119,25 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         }
       }
     });
+  } else if (info.menuItemId === "copySelectedPrompts") {
+    // Open the small popup to select multiple prompts
+    chrome.windows.create({
+      url: "select_prompts.html",
+      type: "popup",
+      width: 300,
+      height: 400
+    });
+  } else if (info.menuItemId === "toggleFavorite") {
+    // Handle toggling the favorite status
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: () => {
+        const promptId = prompt("Enter the ID of the prompt to toggle favorite:");
+        if (promptId) {
+          chrome.runtime.sendMessage({ action: "toggleFavorite", id: promptId });
+        }
+      }
+    });
   } else {
     // Check if the clicked item is a known prompt
     let prompt = defaultPrompts.find(p => `prompt_${p.id}` === info.menuItemId);
@@ -111,6 +148,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
 
     if (prompt) {
+      selectedPrompts.push(prompt.text); // Add the prompt to selected prompts
+
       const currentTime = new Date().getTime();
       const isDoubleClick = currentTime - lastClickTime < 300;
       lastClickTime = currentTime;
@@ -165,5 +204,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     // Save the updated prompts to LocalStorage
     savePromptsToLocalStorage(defaultPrompts);
+  } else if (request.action === "toggleFavorite") {
+    const prompt = defaultPrompts.find(p => p.id === request.id);
+    if (prompt) {
+      prompt.favorite = !prompt.favorite;
+      savePromptsToLocalStorage(defaultPrompts);
+      chrome.contextMenus.update(`prompt_${prompt.id}`, {
+        title: prompt.favorite ? `⭐ ${truncateText(prompt.text, 50)}` : truncateText(prompt.text, 50)
+      });
+    }
   }
 });
