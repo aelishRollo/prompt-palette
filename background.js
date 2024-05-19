@@ -33,13 +33,19 @@ const defaultPrompts = [
       const isDoubleClick = currentTime - lastClickTime < 300;
       lastClickTime = currentTime;
   
-      navigator.clipboard.writeText(prompt.text).then(() => {
-        console.log(`Copied: ${prompt.text}`);
-        if (isDoubleClick) {
-          // Close the context menu (refresh the page to close it)
-          chrome.tabs.reload(tab.id);
-        }
-      }).catch(err => console.error('Failed to write to clipboard', err));
+      // Inject content script and then send message to copy to clipboard
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ['content.js']
+      }, () => {
+        chrome.tabs.sendMessage(tab.id, { action: 'copyToClipboard', text: prompt.text }, () => {
+          console.log(`Copied: ${prompt.text}`);
+          if (isDoubleClick) {
+            // Close the context menu (refresh the page to close it)
+            chrome.tabs.reload(tab.id);
+          }
+        });
+      });
     }
   });
   
