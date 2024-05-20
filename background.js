@@ -49,7 +49,23 @@ function updateContextMenu(prompts) {
       parentId: "openPromptManager"
     });
 
-    // Create separator after "Add New Prompt"
+    // Add context menu item for copying selected prompts
+    chrome.contextMenus.create({
+      id: "copySelectedPrompts",
+      title: "Add Multiple Prompts to Clipboard",
+      contexts: ["all"],
+      parentId: "openPromptManager"
+    });
+
+    // Add context menu item for toggling favorites
+    chrome.contextMenus.create({
+      id: "toggleFavorite",
+      title: "Add or Remove Favorite",
+      contexts: ["all"],
+      parentId: "openPromptManager"
+    });
+
+    // Create separator after "Add or Remove Favorite"
     chrome.contextMenus.create({
       id: "separatorTop",
       parentId: "openPromptManager",
@@ -83,22 +99,6 @@ function updateContextMenu(prompts) {
         title: truncateText(prompt.text, 50), // Truncate text for display
         contexts: ["all"]
       });
-    });
-
-    // Add context menu item for copying selected prompts
-    chrome.contextMenus.create({
-      id: "copySelectedPrompts",
-      title: "Add Multiple Prompts to Clipboard",
-      contexts: ["all"],
-      parentId: "openPromptManager"
-    });
-
-    // Add context menu item for toggling favorites
-    chrome.contextMenus.create({
-      id: "toggleFavorite",
-      title: "Add or Remove Favorite",
-      contexts: ["all"],
-      parentId: "openPromptManager"
     });
   });
 }
