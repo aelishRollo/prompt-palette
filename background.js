@@ -15,6 +15,7 @@ function truncateText(text, maxLength) {
 
 // Function to save prompts to LocalStorage
 function savePromptsToLocalStorage(prompts) {
+  console.log('Saving prompts to storage:', prompts);
   chrome.storage.local.set({ prompts: prompts }, () => {
     console.log('Prompts saved to LocalStorage');
   });
@@ -23,6 +24,7 @@ function savePromptsToLocalStorage(prompts) {
 // Function to load prompts from LocalStorage
 function loadPromptsFromLocalStorage(callback) {
   chrome.storage.local.get('prompts', (data) => {
+    console.log('Loaded prompts from storage:', data.prompts);
     if (data.prompts) {
       callback(data.prompts);
     } else {
@@ -128,15 +130,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       height: 400
     });
   } else if (info.menuItemId === "toggleFavorite") {
-    // Handle toggling the favorite status
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: () => {
-        const promptId = prompt("Enter the ID of the prompt to toggle favorite:");
-        if (promptId) {
-          chrome.runtime.sendMessage({ action: "toggleFavorite", id: promptId });
-        }
-      }
+    // Open the small popup to select a prompt to toggle favorite
+    chrome.windows.create({
+      url: "toggle_favorite.html",
+      type: "popup",
+      width: 300,
+      height: 400
     });
   } else {
     // Check if the clicked item is a known prompt
