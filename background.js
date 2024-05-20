@@ -33,9 +33,9 @@ function loadPromptsFromLocalStorage(callback) {
   });
 }
 
-chrome.runtime.onInstalled.addListener(() => {
-  // Load prompts from LocalStorage and create context menu items
-  loadPromptsFromLocalStorage((prompts) => {
+// Function to update the context menu
+function updateContextMenu(prompts) {
+  chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({
       id: "openPromptManager",
       title: "Open GPT Prompt Manager",
@@ -101,8 +101,12 @@ chrome.runtime.onInstalled.addListener(() => {
       contexts: ["all"],
       parentId: "openPromptManager"
     });
+  });
+}
 
-    // Update the defaultPrompts array with the loaded prompts
+chrome.runtime.onInstalled.addListener(() => {
+  loadPromptsFromLocalStorage((prompts) => {
+    updateContextMenu(prompts);
     defaultPrompts.splice(0, defaultPrompts.length, ...prompts);
   });
 });
@@ -208,9 +212,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (prompt) {
       prompt.favorite = !prompt.favorite;
       savePromptsToLocalStorage(defaultPrompts);
-      chrome.contextMenus.update(`prompt_${prompt.id}`, {
-        title: prompt.favorite ? `⭐ ${truncateText(prompt.text, 50)}` : truncateText(prompt.text, 50)
-      });
+      updateContextMenu(defaultPrompts);
     }
   }
 });
