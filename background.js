@@ -1,12 +1,10 @@
-const defaultPrompts = [
+let defaultPrompts = [
   { id: "conveyInfo", text: "Convey the most essential information while reducing the amount of tokens used.", favorite: false },
   { id: "explainSimply", text: "Explain in 3 lines using simple language and no metaphors. Make sure to capture the entire essence in your explanation.", favorite: true },
   { id: "outlineFeedback", text: "Come up with an outline for approaching the solution. Then give yourself constructive feedback on this outline, then come up with another outline which improves using that feedback.", favorite: false },
   { id: "summarize", text: "Summarize the text focusing on the main points.", favorite: true },
   { id: "detailedSteps", text: "Provide detailed step-by-step instructions for achieving the desired outcome.", favorite: false }
 ];
-
-let selectedPrompts = [];
 
 // Function to truncate text for display
 function truncateText(text, maxLength) {
@@ -35,6 +33,7 @@ function loadPromptsFromLocalStorage(callback) {
 
 // Function to update the context menu
 function updateContextMenu(prompts) {
+  console.log('Updating context menu with prompts:', prompts);
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({
       id: "openPromptManager",
@@ -107,7 +106,7 @@ function updateContextMenu(prompts) {
 chrome.runtime.onInstalled.addListener(() => {
   loadPromptsFromLocalStorage((prompts) => {
     updateContextMenu(prompts);
-    defaultPrompts.splice(0, defaultPrompts.length, ...prompts);
+    defaultPrompts.splice(0, defaultPrompts.length, ...prompts); // Update the contents without reassigning
   });
 });
 
@@ -207,12 +206,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     // Save the updated prompts to LocalStorage
     savePromptsToLocalStorage(defaultPrompts);
-  } else if (request.action === "toggleFavorite") {
-    const prompt = defaultPrompts.find(p => p.id === request.id);
-    if (prompt) {
-      prompt.favorite = !prompt.favorite;
-      savePromptsToLocalStorage(defaultPrompts);
-      updateContextMenu(defaultPrompts);
-    }
+  } else if (request.action === "toggleFavoriteMultiple") {
+    console.log('Received toggleFavoriteMultiple message:', request.ids); // Debugging message
+    request.ids.forEach(id => {
+      const prompt = defaultPrompts.find(p => p.id === id);
+      if (prompt) {
+        prompt.favorite = !prompt.favorite;
+        console.log('Toggled favorite status for prompt:', prompt); // Debugging message
+      }
+    });
+    savePromptsToLocalStorage(defaultPrompts);
+    updateContextMenu(defaultPrompts); // Update context menu after modifying favorites
   }
 });

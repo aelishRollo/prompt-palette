@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Toggle Favorite</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle Favorite Prompts</title>
   <style>
-    body { font-family: Arial, sans-serif; width: 300px; }
-    .prompt { margin: 5px 0; padding: 5px; border: 1px solid #ddd; cursor: pointer; }
-    .favorite { background-color: #ffeb3b; }
+    .prompt { padding: 10px; cursor: pointer; }
+    .prompt.selected { background-color: #d3d3d3; }
+    .prompt.favorite { color: gold; }
+    .button { margin-top: 10px; }
   </style>
 </head>
 <body>
-  <h1>Toggle Favorite</h1>
   <div id="prompts"></div>
+  <script src="toggle_favorite.js"></script>
 </body>
-<script src="toggle_favorite.js"></script>
 </html>
