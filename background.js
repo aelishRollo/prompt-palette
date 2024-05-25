@@ -32,8 +32,8 @@ function loadPromptsFromLocalStorage(callback) {
 }
 
 // Function to update the context menu
-function updateContextMenu(prompts) {
-  console.log('Updating context menu with prompts:', prompts);
+function updateContextMenu() {
+  console.log('Updating context menu');
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({
       id: "openPromptManager",
@@ -64,68 +64,25 @@ function updateContextMenu(prompts) {
       contexts: ["all"],
       parentId: "openPromptManager"
     });
-
-    // Create separator after "Add or Remove Favorite"
-    chrome.contextMenus.create({
-      id: "separatorTop",
-      parentId: "openPromptManager",
-      type: "separator",
-      contexts: ["all"]
-    });
-
-    // Create context menu items for favorite prompts
-    prompts.filter(prompt => prompt.favorite).forEach(prompt => {
-      chrome.contextMenus.create({
-        id: `prompt_${prompt.id}`,
-        parentId: "openPromptManager",
-        title: `⭐ ${truncateText(prompt.text, 50)}`, // Truncate text for display
-        contexts: ["all"]
-      });
-    });
-
-    // Create context menu separator for favorites
-    chrome.contextMenus.create({
-      id: "separatorFavorites",
-      parentId: "openPromptManager",
-      type: "separator",
-      contexts: ["all"]
-    });
-
-    // Create context menu items for non-favorite prompts
-    prompts.filter(prompt => !prompt.favorite).forEach(prompt => {
-      chrome.contextMenus.create({
-        id: `prompt_${prompt.id}`,
-        parentId: "openPromptManager",
-        title: truncateText(prompt.text, 50), // Truncate text for display
-        contexts: ["all"]
-      });
-    });
   });
 }
 
 chrome.runtime.onInstalled.addListener(() => {
   loadPromptsFromLocalStorage((prompts) => {
-    updateContextMenu(prompts);
-    defaultPrompts.splice(0, defaultPrompts.length, ...prompts); // Update the contents without reassigning
+    defaultPrompts = prompts;
+    updateContextMenu();
   });
 });
 
-let lastClickTime = 0;
-
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "addNewPrompt") {
-    // Prompt the user to enter a new prompt
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: () => {
-        const newPrompt = prompt("Enter your new GPT prompt:");
-        if (newPrompt) {
-          chrome.runtime.sendMessage({ action: "addNewPrompt", text: newPrompt });
-        }
-      }
+    chrome.windows.create({
+      url: "add_prompt.html",
+      type: "popup",
+      width: 300,
+      height: 200
     });
   } else if (info.menuItemId === "copySelectedPrompts") {
-    // Open the small popup to select multiple prompts
     chrome.windows.create({
       url: "select_prompts.html",
       type: "popup",
@@ -133,56 +90,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       height: 400
     });
   } else if (info.menuItemId === "toggleFavorite") {
-    // Open the small popup to select a prompt to toggle favorite
     chrome.windows.create({
       url: "toggle_favorite.html",
       type: "popup",
       width: 300,
       height: 400
     });
-  } else {
-    // Check if the clicked item is a known prompt
-    let prompt = defaultPrompts.find(p => `prompt_${p.id}` === info.menuItemId);
-
-    // If not found, check if it's a dynamically added prompt
-    if (!prompt) {
-      prompt = defaultPrompts.find(p => p.id === info.menuItemId);
-    }
-
-    if (prompt) {
-      selectedPrompts.push(prompt.text); // Add the prompt to selected prompts
-
-      const currentTime = new Date().getTime();
-      const isDoubleClick = currentTime - lastClickTime < 300;
-      lastClickTime = currentTime;
-
-      // Show notification with the full text
-      chrome.notifications.create({
-        type: 'basic',
-        iconUrl: 'icon.png', // Path to an icon image for the notification
-        title: 'Full Prompt Text',
-        message: prompt.text
-      });
-
-      // Check if the tab URL is valid
-      if (!tab.url.startsWith('chrome://')) {
-        // Inject content script and then send message to copy to clipboard
-        chrome.scripting.executeScript({
-          target: { tabId: tab.id },
-          files: ['content.js']
-        }, () => {
-          chrome.tabs.sendMessage(tab.id, { action: 'copyToClipboard', text: prompt.text }, () => {
-            console.log(`Copied: ${prompt.text}`);
-            if (isDoubleClick) {
-              // Close the context menu (refresh the page to close it)
-              chrome.tabs.reload(tab.id);
-            }
-          });
-        });
-      } else {
-        console.error('Cannot access a chrome:// URL');
-      }
-    }
   }
 });
 
@@ -196,26 +109,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     };
     defaultPrompts.push(newPrompt);
 
-    // Add the new prompt to the context menu
-    chrome.contextMenus.create({
-      id: `prompt_${newPrompt.id}`,
-      parentId: "openPromptManager",
-      title: truncateText(newPrompt.text, 50),
-      contexts: ["all"]
-    });
-
     // Save the updated prompts to LocalStorage
     savePromptsToLocalStorage(defaultPrompts);
   } else if (request.action === "toggleFavoriteMultiple") {
-    console.log('Received toggleFavoriteMultiple message:', request.ids); // Debugging message
+    console.log('Received toggleFavoriteMultiple message:', request.ids);
     request.ids.forEach(id => {
       const prompt = defaultPrompts.find(p => p.id === id);
       if (prompt) {
         prompt.favorite = !prompt.favorite;
-        console.log('Toggled favorite status for prompt:', prompt); // Debugging message
+        console.log('Toggled favorite status for prompt:', prompt);
       }
     });
     savePromptsToLocalStorage(defaultPrompts);
-    updateContextMenu(defaultPrompts); // Update context menu after modifying favorites
   }
 });

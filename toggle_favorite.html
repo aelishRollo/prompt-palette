@@ -5,14 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Toggle Favorite Prompts</title>
   <style>
-    .prompt { padding: 10px; cursor: pointer; }
-    .prompt.selected { background-color: #d3d3d3; }
-    .prompt.favorite { color: gold; }
-    .button { margin-top: 10px; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .prompt {
+      cursor: pointer;
+      padding: 5px;
+      border: 1px solid #ddd;
+      margin-bottom: 5px;
+    }
+    .favorite {
+      background-color: #ffd700;
+    }
+    .button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
+  <h2>Toggle Favorite Prompts</h2>
   <div id="prompts"></div>
+  <button class="button" id="doneButton">Done</button>
   <script src="toggle_favorite.js"></script>
 </body>
 </html>

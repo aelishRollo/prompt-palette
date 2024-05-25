@@ -3,20 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Select Prompts</title>
+  <title>Add New Prompt</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
     }
-    .prompt {
-      cursor: pointer;
-      padding: 5px;
-      border: 1px solid #ddd;
-      margin-bottom: 5px;
-    }
-    .selected {
-      background-color: #d3d3d3;
+    .input-container {
+      margin-bottom: 10px;
     }
     .button {
       padding: 10px;
@@ -24,14 +18,15 @@
       color: white;
       border: none;
       cursor: pointer;
-      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <h2>Select Prompts to Copy</h2>
-  <div id="prompts"></div>
-  <button class="button" id="copyPromptsButton">Copy Selected Prompts</button>
-  <script src="select_prompts.js"></script>
+  <h2>Add New Prompt</h2>
+  <div class="input-container">
+    <textarea id="newPromptText" rows="4" cols="50" placeholder="Enter your new GPT prompt here..."></textarea>
+  </div>
+  <button class="button" id="savePromptButton">Save Prompt</button>
+  <script src="add_prompt.js"></script>
 </body>
 </html>
