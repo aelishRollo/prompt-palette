@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "Prompt Palette",
+    "version": "1.0",
+    "description": "Manage and use prompt palettes in Brave browser.",
+    "permissions": [
+      "contextMenus",
+      "storage",
+      "clipboardWrite"
+    ],
+    "background": {
+      "service_worker": "js/background.js"
+    },
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "images/icon-16.png",
+        "48": "images/icon-48.png",
+        "128": "images/icon-128.png"
+      }
+    },
+    "icons": {
+      "16": "images/icon-16.png",
+      "48": "images/icon-48.png",
+      "128": "images/icon-128.png"
+    }
+  }
+  

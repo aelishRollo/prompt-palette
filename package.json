@@ -1,0 +1,12 @@
+{
+    "name": "brave-prompt-palette",
+    "version": "1.0.0",
+    "description": "A Chromium browser extension for managing and using prompts for use with AI.",
+    "main": "js/background.js",
+    "author": "Alexander Rollison",
+    "license": "MIT",
+    "scripts": {
+      "start": "echo 'Starting extension...' && exit 0"
+    }
+  }
+  
