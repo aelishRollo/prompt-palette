@@ -74,28 +74,37 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+function openPopup(url, widthPercentage, heightPercentage) {
+  chrome.system.display.getInfo((displays) => {
+    console.log('Displays Info:', displays); // Log display information for debugging
+    if (displays && displays.length > 0) {
+      const display = displays[0];
+      const screenWidth = display.workArea.width;
+      const screenHeight = display.workArea.height;
+
+      const width = Math.min(400, screenWidth * widthPercentage);
+      const height = Math.min(600, screenHeight * heightPercentage);
+
+      console.log(`Creating popup with width: ${width} and height: ${height}`); // Log popup dimensions for debugging
+      chrome.windows.create({
+        url: url,
+        type: "popup",
+        width: width,
+        height: height
+      });
+    } else {
+      console.error('No displays found');
+    }
+  });
+}
+
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "addNewPrompt") {
-    chrome.windows.create({
-      url: "add_prompt.html",
-      type: "popup",
-      width: 300,
-      height: 200
-    });
+    openPopup("add_prompt.html", 0.4, 0.3);
   } else if (info.menuItemId === "copySelectedPrompts") {
-    chrome.windows.create({
-      url: "select_prompts.html",
-      type: "popup",
-      width: 300,
-      height: 400
-    });
+    openPopup("select_prompts.html", 0.4, 0.6);
   } else if (info.menuItemId === "toggleFavorite") {
-    chrome.windows.create({
-      url: "toggle_favorite.html",
-      type: "popup",
-      width: 300,
-      height: 400
-    });
+    openPopup("toggle_favorite.html", 0.4, 0.6);
   }
 });
 
