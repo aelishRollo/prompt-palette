@@ -37,10 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function deletePrompt(index) {
-      const prompts = loadPrompts();
-      prompts.splice(index, 1);
-      savePrompts(prompts);
-      displayPrompts();
+      const confirmation = confirm("Are you sure you want to delete this prompt?");
+      if (confirmation) {
+          const prompts = loadPrompts();
+          prompts.splice(index, 1);
+          savePrompts(prompts);
+          displayPrompts();
+      }
   }
 
   addPromptButton.addEventListener('click', addPrompt);
