@@ -23,8 +23,17 @@ h1 {
 .prompt-item {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 5px;
     border-bottom: 1px solid #ccc;
+}
+
+.prompt-item span {
+    flex-grow: 1;
+}
+
+.prompt-item input[type="checkbox"] {
+    margin-right: 10px;
 }
 
 .prompt-item button {
