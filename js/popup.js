@@ -72,10 +72,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const textToCopy = selectedPrompts.join('\n');
         navigator.clipboard.writeText(textToCopy).then(() => {
-            alert('Prompts copied to clipboard');
+            showNotification('Prompts copied to clipboard');
+            setTimeout(() => {
+                window.close();
+            }, 1500);
         }).catch(err => {
             console.error('Could not copy text: ', err);
         });
+    }
+
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.innerText = message;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+            notification.remove();
+        }, 1500);
     }
 
     addPromptButton.addEventListener('click', addPrompt);
