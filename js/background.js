@@ -2,7 +2,7 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "promptPalette",
     title: "Prompt Palette",
-    contexts: ["all"]
+    contexts: ["page", "selection", "link"]
   });
 });
 
