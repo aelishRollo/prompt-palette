@@ -26,7 +26,12 @@ h1 {
     align-items: center;
     padding: 5px;
     border-bottom: 1px solid #ccc;
+    background-color: #e2efff;
     cursor: pointer;
+}
+
+.prompt-item:hover {
+    background-color: #81bcff;
 }
 
 .prompt-item span {
@@ -54,7 +59,7 @@ h1 {
 }
 
 .prompt-item.selected {
-    background-color: #e0e0e0;
+    background-color: #6171ff;
 }
 
 #prompt-management {
