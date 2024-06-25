@@ -32,10 +32,19 @@ h1 {
     color: white;
     border: none;
     cursor: pointer;
+    margin-left: 5px;
+}
+
+.prompt-item button.edit {
+    background-color: #4CAF50;
 }
 
 .prompt-item button:hover {
     background-color: #d32f2f;
+}
+
+.prompt-item button.edit:hover {
+    background-color: #45a049;
 }
 
 #prompt-management {

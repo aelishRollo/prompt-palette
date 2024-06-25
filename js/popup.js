@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
             promptItem.className = 'prompt-item';
             promptItem.innerHTML = `
                 <span>${prompt}</span>
-                <button data-index="${index}">Delete</button>
+                <button class="edit" data-index="${index}">Edit</button>
+                <button class="delete" data-index="${index}">Delete</button>
             `;
             promptList.appendChild(promptItem);
         });
@@ -46,11 +47,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function editPrompt(index) {
+        const prompts = loadPrompts();
+        const currentPrompt = prompts[index];
+        const newPrompt = prompt("Edit your prompt:", currentPrompt);
+        if (newPrompt !== null && newPrompt.trim() !== "") {
+            prompts[index] = newPrompt.trim();
+            savePrompts(prompts);
+            displayPrompts();
+        }
+    }
+
     addPromptButton.addEventListener('click', addPrompt);
     promptList.addEventListener('click', (event) => {
-        if (event.target.tagName === 'BUTTON') {
+        if (event.target.classList.contains('delete')) {
             const index = event.target.getAttribute('data-index');
             deletePrompt(index);
+        } else if (event.target.classList.contains('edit')) {
+            const index = event.target.getAttribute('data-index');
+            editPrompt(index);
         }
     });
 
