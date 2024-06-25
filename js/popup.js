@@ -19,11 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const promptItem = document.createElement('div');
             promptItem.className = 'prompt-item';
             promptItem.innerHTML = `
-                <input type="checkbox" class="select-prompt" data-index="${index}">
                 <span>${prompt}</span>
                 <button class="edit" data-index="${index}">Edit</button>
                 <button class="delete" data-index="${index}">Delete</button>
             `;
+            promptItem.addEventListener('click', (event) => {
+                if (!event.target.classList.contains('edit') && !event.target.classList.contains('delete')) {
+                    promptItem.classList.toggle('selected');
+                }
+            });
             promptList.appendChild(promptItem);
         });
     }
@@ -62,8 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function copySelectedPrompts() {
         const selectedPrompts = [];
-        document.querySelectorAll('.select-prompt:checked').forEach(checkbox => {
-            const index = checkbox.getAttribute('data-index');
+        document.querySelectorAll('.prompt-item.selected').forEach(item => {
+            const index = item.querySelector('.edit').getAttribute('data-index');
             selectedPrompts.push(loadPrompts()[index]);
         });
         const textToCopy = selectedPrompts.join('\n');

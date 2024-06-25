@@ -26,14 +26,11 @@ h1 {
     align-items: center;
     padding: 5px;
     border-bottom: 1px solid #ccc;
+    cursor: pointer;
 }
 
 .prompt-item span {
     flex-grow: 1;
-}
-
-.prompt-item input[type="checkbox"] {
-    margin-right: 10px;
 }
 
 .prompt-item button {
@@ -54,6 +51,10 @@ h1 {
 
 .prompt-item button.edit:hover {
     background-color: #45a049;
+}
+
+.prompt-item.selected {
+    background-color: #e0e0e0;
 }
 
 #prompt-management {
