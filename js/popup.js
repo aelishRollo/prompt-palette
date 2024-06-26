@@ -1,11 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const addPromptButton = document.getElementById('add-prompt');
+    const addGroupButton = document.getElementById('add-group');
     const copyPromptsButton = document.getElementById('copy-prompts');
     const toggleTagFilterButton = document.getElementById('toggle-tag-filter');
     const promptInput = document.getElementById('prompt-input');
-    const tagFilterSelect = document.getElementById('tag-filter-select');
+    const groupInput = document.getElementById('group-input');
+    const promptGroupSelect = document.getElementById('prompt-group');
+    const groupFilterSelect = document.getElementById('group-filter');
     const promptList = document.getElementById('prompt-list');
-    const tagFilterSection = document.getElementById('tag-filter-section');
+    const groupList = document.getElementById('group-list');
 
     function saveData(key, data) {
         localStorage.setItem(key, JSON.stringify(data));
@@ -15,19 +18,38 @@ document.addEventListener('DOMContentLoaded', () => {
         return JSON.parse(localStorage.getItem(key)) || [];
     }
 
+    function displayGroups() {
+        const groups = loadData('groups');
+        groupList.innerHTML = '';
+        promptGroupSelect.innerHTML = '<option value="">No Group</option>';
+        groupFilterSelect.innerHTML = '<option value="">All Groups</option>';
+        groups.forEach((group, index) => {
+            const groupItem = document.createElement('div');
+            groupItem.className = 'group-item';
+            groupItem.innerHTML = `
+                <span>${group.name}</span>
+                <button class="delete-group" data-index="${index}">Delete</button>
+            `;
+            groupList.appendChild(groupItem);
+
+            const groupOption = document.createElement('option');
+            groupOption.value = group.id;
+            groupOption.innerText = group.name;
+            promptGroupSelect.appendChild(groupOption);
+            groupFilterSelect.appendChild(groupOption.cloneNode(true));
+        });
+    }
+
     function displayPrompts() {
         const prompts = loadData('prompts');
-        const selectedTags = Array.from(tagFilterSelect.selectedOptions).map(option => option.value);
+        const selectedGroup = groupFilterSelect.value;
         promptList.innerHTML = '';
         prompts.forEach((prompt, index) => {
-            if (selectedTags.length > 0 && selectedTags[0] !== "" && !selectedTags.some(tag => prompt.tags.includes(tag))) {
-                return;
-            }
+            if (selectedGroup && prompt.groupId !== selectedGroup) return;
             const promptItem = document.createElement('div');
             promptItem.className = 'prompt-item';
             promptItem.innerHTML = `
                 <span>${prompt.text}</span>
-                <button class="add-tag" data-index="${index}">Add Tag</button>
                 <button class="edit" data-index="${index}">Edit</button>
                 <button class="delete" data-index="${index}">Delete</button>
             `;
@@ -40,33 +62,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function displayTags() {
-        const prompts = loadData('prompts');
-        const tags = new Set();
-        prompts.forEach(prompt => {
-            prompt.tags.forEach(tag => {
-                tags.add(tag);
-            });
-        });
-        tagFilterSelect.innerHTML = '<option value="">All Prompts</option>';
-        tags.forEach(tag => {
-            const option = document.createElement('option');
-            option.value = tag;
-            option.textContent = tag;
-            tagFilterSelect.appendChild(option);
-        });
+    function addGroup() {
+        const groupName = groupInput.value.trim();
+        if (groupName) {
+            const groups = loadData('groups');
+            const groupId = Date.now().toString();
+            groups.push({ id: groupId, name: groupName });
+            saveData('groups', groups);
+            displayGroups();
+            groupInput.value = '';
+        }
     }
 
     function addPrompt() {
         const newPrompt = promptInput.value.trim();
+        const groupId = promptGroupSelect.value;
         if (newPrompt) {
             const prompts = loadData('prompts');
-            prompts.push({ text: newPrompt, tags: [] });
+            prompts.push({ text: newPrompt, groupId });
             saveData('prompts', prompts);
             displayPrompts();
             displayTags();
             promptInput.value = '';
         }
+    }
+
+    function deleteGroup(index) {
+        const groups = loadData('groups');
+        groups.splice(index, 1);
+        saveData('groups', groups);
+        displayGroups();
+        displayPrompts();
     }
 
     function deletePrompt(index) {
@@ -134,8 +160,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     addPromptButton.addEventListener('click', addPrompt);
+    addGroupButton.addEventListener('click', addGroup);
     copyPromptsButton.addEventListener('click', copySelectedPrompts);
-    toggleTagFilterButton.addEventListener('click', toggleTagFilter);
+
+    groupList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('delete-group')) {
+            const index = event.target.getAttribute('data-index');
+            deleteGroup(index);
+        }
+    });
 
     promptList.addEventListener('click', (event) => {
         if (event.target.classList.contains('delete')) {
@@ -152,6 +185,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tagFilterSelect.addEventListener('change', displayPrompts);
 
+    groupFilterSelect.addEventListener('change', displayPrompts);
+
+    displayGroups();
     displayPrompts();
     displayTags();
 });
