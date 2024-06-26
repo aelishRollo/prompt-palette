@@ -14,16 +14,18 @@
             <button id="add-prompt">Add Prompt</button>
         </div>
         <button id="copy-prompts">Copy Selected Prompts</button>
-        <button id="toggle-tag-filter">Filter</button>
-        <div id="tag-filter-section" class="hidden">
-            <label>Filter by Tags:</label>
-            <select id="tag-filter-select" multiple>
-                <option value="">All Prompts</option>
-                <!-- Tag options will be populated here -->
-            </select>
-        </div>
         <div id="prompt-list">
             <!-- Prompt list will be populated here -->
+        </div>
+        <div id="filter-section">
+            <button id="toggle-tag-filter">Filter</button>
+            <div id="tag-filter-section" class="hidden">
+                <label>Filter by Tags:</label>
+                <select id="tag-filter-select" multiple>
+                    <option value="">All Prompts</option>
+                    <!-- Tag options will be populated here -->
+                </select>
+            </div>
         </div>
     </div>
     <script src="js/popup.js"></script>

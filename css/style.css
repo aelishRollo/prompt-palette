@@ -38,7 +38,12 @@ button:hover {
     background-color: #45a049;
 }
 
+#filter-section {
+    margin-top: 10px;
+}
+
 #tag-filter-section {
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
