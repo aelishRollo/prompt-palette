@@ -4,12 +4,13 @@ body {
     padding: 0;
     width: 300px;
     height: 500px; /* Adjusted height */
-    background-color: #f9f9f9;
+    background-color: #1e2a38; /* Dark Blue background */
+    color: #f5f5f5; /* Light Gray text color */
 }
 
 #app {
     padding: 20px;
-    background-color: #ffffff;
+    background-color: #243447; /* Slightly lighter Dark Blue */
     border-radius: 10px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
@@ -17,6 +18,7 @@ body {
 h1 {
     font-size: 1.5em;
     margin-bottom: 20px;
+    color: #f5f5f5; /* Light Gray */
 }
 
 #prompt-management {
@@ -28,12 +30,14 @@ h1 {
 #prompt-input {
     flex-grow: 1;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #bdc3c7; /* Gray */
     border-radius: 5px;
+    background-color: #2c3e50; /* Darker input background */
+    color: #f5f5f5; /* Light Gray text */
 }
 
 button {
-    background-color: #21ba45;
+    background-color: #3498db; /* Blue */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -49,12 +53,17 @@ button {
 }
 
 button:hover {
-    background-color: #16ab39;
+    background-color: #2980b9; /* Darker Blue */
 }
 
 #toggle-tag-filter {
     margin-bottom: 20px;
     width: 100%;
+    background-color: #3498db; /* Blue */
+}
+
+#toggle-tag-filter:hover {
+    background-color: #2980b9; /* Darker Blue */
 }
 
 #tag-filter-section {
@@ -65,13 +74,16 @@ button:hover {
     display: block;
     margin-bottom: 10px;
     font-size: 1em; /* Larger font size */
+    color: #f5f5f5; /* Light Gray */
 }
 
 #tag-filter-select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #bdc3c7; /* Gray */
     border-radius: 5px;
+    background-color: #2c3e50; /* Darker input background */
+    color: #f5f5f5; /* Light Gray text */
 }
 
 #prompt-list {
@@ -86,7 +98,7 @@ button:hover {
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #ddd;
-    background-color: #fff;
+    background-color: #243447; /* Slightly lighter Dark Blue */
     border-radius: 5px;
     margin-bottom: 10px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -94,12 +106,13 @@ button:hover {
 }
 
 .prompt-item:hover {
-    background-color: #f0f0f0;
+    background-color: #2c3e50; /* Darker hover background */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .prompt-item span {
     flex-grow: 1;
+    color: #f5f5f5; /* Light Gray */
 }
 
 .prompt-item button {
@@ -114,31 +127,31 @@ button:hover {
 }
 
 .prompt-item button.add-tag {
-    background-color: #21ba45;
+    background-color: #3498db; /* Blue */
 }
 
 .prompt-item button.edit {
-    background-color: #f2711c; /* Orange color for edit */
+    background-color: #f39c12; /* Orange */
 }
 
 .prompt-item button.delete {
-    background-color: #db2828;
+    background-color: #e74c3c; /* Red */
 }
 
 .prompt-item button.add-tag:hover {
-    background-color: #16ab39;
+    background-color: #2980b9; /* Darker Blue */
 }
 
 .prompt-item button.edit:hover {
-    background-color: #d35400; /* Darker shade of orange */
+    background-color: #e67e22; /* Darker Orange */
 }
 
 .prompt-item button.delete:hover {
-    background-color: #c62828;
+    background-color: #c0392b; /* Darker Red */
 }
 
 .prompt-item.selected {
-    background-color: #e0e0e0;
+    background-color: #34495e; /* Even darker Blue */
 }
 
 .full-screen-notification {
@@ -146,7 +159,7 @@ button:hover {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #21ba45;
+    background-color: #3498db; /* Blue */
     color: white;
     font-size: 1.5em;
     text-align: center;
