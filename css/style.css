@@ -1,65 +1,81 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
     width: 300px;
-    height: 500px; /* Increased height to accommodate more space */
+    height: 500px; /* Adjusted height */
+    background-color: #f9f9f9;
 }
 
 #app {
-    padding: 10px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 h1 {
     font-size: 1.5em;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 #prompt-management {
     display: flex;
-    gap: 5px;
-    margin-bottom: 20px; /* More space between sections */
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 #prompt-input {
     flex-grow: 1;
-    padding: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #21ba45;
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 10px 20px;
     cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+    font-size: 1em;
+    margin-bottom: 10px;
+    display: block;
+    width: 100%; /* Ensure full width for better spacing */
+    text-align: center; /* Center the text */
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #16ab39;
 }
 
 #toggle-tag-filter {
-    margin-bottom: 20px; /* More space between sections */
+    margin-bottom: 20px;
+    width: 100%;
 }
 
 #tag-filter-section {
-    margin-bottom: 20px; /* More space between sections */
+    margin-bottom: 20px;
 }
 
 #tag-filter-section label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    font-size: 1em; /* Larger font size */
 }
 
 #tag-filter-select {
     width: 100%;
-    padding: 5px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 #prompt-list {
-    margin-bottom: 20px; /* More space between sections */
+    margin-bottom: 20px;
     max-height: 200px;
     overflow-y: auto;
 }
@@ -68,14 +84,18 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px;
-    border-bottom: 1px solid #ccc;
-    background-color: #f9f9f9;
-    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .prompt-item:hover {
-    background-color: #e0e0e0;
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .prompt-item span {
@@ -87,38 +107,38 @@ button:hover {
     border: none;
     cursor: pointer;
     margin-left: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
 }
 
 .prompt-item button.add-tag {
-    background-color: #4CAF50;
+    background-color: #21ba45;
 }
 
 .prompt-item button.edit {
-    background-color: #FFA500; /* Changed color to orange */
+    background-color: #f2711c; /* Orange color for edit */
 }
 
 .prompt-item button.delete {
-    background-color: #f44336;
-}
-
-.prompt-item button:hover {
-    background-color: #d32f2f;
+    background-color: #db2828;
 }
 
 .prompt-item button.add-tag:hover {
-    background-color: #45a049;
+    background-color: #16ab39;
 }
 
 .prompt-item button.edit:hover {
-    background-color: #e59400; /* Darker shade of orange */
+    background-color: #d35400; /* Darker shade of orange */
 }
 
 .prompt-item button.delete:hover {
-    background-color: #d32f2f;
+    background-color: #c62828;
 }
 
 .prompt-item.selected {
-    background-color: #d0d0d0;
+    background-color: #e0e0e0;
 }
 
 .full-screen-notification {
@@ -126,10 +146,11 @@ button:hover {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #4CAF50;
+    background-color: #21ba45;
     color: white;
     font-size: 1.5em;
     text-align: center;
+    border-radius: 10px;
 }
 
 .hidden {
