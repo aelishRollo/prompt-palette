@@ -41,7 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayTags() {
-        const tags = loadData('tags');
+        const prompts = loadData('prompts');
+        const tags = new Set();
+        prompts.forEach(prompt => {
+            prompt.tags.forEach(tag => {
+                tags.add(tag);
+            });
+        });
         tagFilterSelect.innerHTML = '<option value="">All Prompts</option>';
         tags.forEach(tag => {
             const option = document.createElement('option');
@@ -58,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             prompts.push({ text: newPrompt, tags: [] });
             saveData('prompts', prompts);
             displayPrompts();
+            displayTags();
             promptInput.value = '';
         }
     }
@@ -69,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             prompts.splice(index, 1);
             saveData('prompts', prompts);
             displayPrompts();
+            displayTags();
         }
     }
 
@@ -80,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             prompts[index].text = newPrompt.trim();
             saveData('prompts', prompts);
             displayPrompts();
+            displayTags();
         }
     }
 
@@ -91,12 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 prompts[index].tags.push(tag.trim());
                 saveData('prompts', prompts);
             }
-            const tags = loadData('tags');
-            if (!tags.includes(tag.trim())) {
-                tags.push(tag.trim());
-                saveData('tags', tags);
-                displayTags();
-            }
+            displayTags();
         }
     }
 
@@ -123,10 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         notification.innerText = message;
         document.body.innerHTML = ''; // Clear the current content
         document.body.appendChild(notification);
-        notification.style.width = '100%'; // Ensure it takes the full width
-        notification.style.height = '100%'; // Ensure it takes the full height
     }
-    
 
     function toggleTagFilter() {
         tagFilterSection.classList.toggle('hidden');
@@ -151,6 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tagFilterSelect.addEventListener('change', displayPrompts);
 
-    displayTags();
     displayPrompts();
+    displayTags();
 });
