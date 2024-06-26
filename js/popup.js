@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const textToCopy = selectedPrompts.join('\n');
         navigator.clipboard.writeText(textToCopy).then(() => {
-            showNotification('Prompts copied to clipboard');
+            showFullScreenNotification('Prompts copied to clipboard');
             setTimeout(() => {
                 window.close();
             }, 1500);
@@ -81,14 +81,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function showNotification(message) {
+    function showFullScreenNotification(message) {
         const notification = document.createElement('div');
-        notification.className = 'notification';
+        notification.className = 'full-screen-notification';
         notification.innerText = message;
+        document.body.innerHTML = ''; // Clear the current content
         document.body.appendChild(notification);
-        setTimeout(() => {
-            notification.remove();
-        }, 1500);
     }
 
     addPromptButton.addEventListener('click', addPrompt);

@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
     width: 300px;
+    height: 200px;
 }
 
 #app {
@@ -26,12 +27,12 @@ h1 {
     align-items: center;
     padding: 5px;
     border-bottom: 1px solid #ccc;
-    background-color: #e2efff;
+    background-color: #f9f9f9;
     cursor: pointer;
 }
 
 .prompt-item:hover {
-    background-color: #81bcff;
+    background-color: #e0e0e0;
 }
 
 .prompt-item span {
@@ -59,7 +60,7 @@ h1 {
 }
 
 .prompt-item.selected {
-    background-color: #6171ff;
+    background-color: #d0d0d0;
 }
 
 #prompt-management {
@@ -84,15 +85,13 @@ button:hover {
     background-color: #45a049;
 }
 
-.notification {
-    position: fixed;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+.full-screen-notification {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     background-color: #4CAF50;
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    font-size: 1.5em;
+    text-align: center;
 }
