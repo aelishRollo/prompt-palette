@@ -123,7 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
         notification.innerText = message;
         document.body.innerHTML = ''; // Clear the current content
         document.body.appendChild(notification);
+        notification.style.width = '100%'; // Ensure it takes the full width
+        notification.style.height = '100%'; // Ensure it takes the full height
     }
+    
 
     function toggleTagFilter() {
         tagFilterSection.classList.toggle('hidden');
