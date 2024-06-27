@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const index = item.querySelector('.edit').getAttribute('data-index');
             selectedPrompts.push(loadData('prompts')[index].text);
         });
-        const textToCopy = selectedPrompts.join('\n');
+        const textToCopy = '\n\n' + selectedPrompts.join('\n\n');
         navigator.clipboard.writeText(textToCopy).then(() => {
             showFullScreenNotification('Prompts copied to clipboard');
             setTimeout(() => {
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tagFilterSection.classList.contains('hidden')) {
             toggleTagFilterButton.innerText = 'Filter Prompts';
         } else {
-            toggleTagFilterButton.innerText = 'Close Filter Menu';
+            toggleTagFilterButton.innerText = 'Close';
         }
     }
 
