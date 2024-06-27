@@ -154,7 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.activeElement.setAttribute('aria-pressed', isSelected.toString());
             }
         } else if (event.key === 'Enter') {
-            copySelectedPrompts();
+            if (event.shiftKey) {
+                copySelectedPrompts();
+            } else if (document.activeElement.classList.contains('prompt-item')) {
+                document.activeElement.classList.toggle('selected');
+                const isSelected = document.activeElement.classList.contains('selected');
+                document.activeElement.setAttribute('aria-pressed', isSelected.toString());
+            }
         }
     }
 
