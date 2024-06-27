@@ -1,27 +1,28 @@
 {
-  "manifest_version": 3,
-  "name": "Prompt Palette",
-  "version": "1.0",
-  "description": "A simple prompt management extension.",
-  "permissions": [
-      "storage",
-      "contextMenus",
-      "commands",
-      "clipboardWrite"
-  ],
-  "background": {
-      "service_worker": "js/background.js"
-  },
-  "action": {
-      "default_popup": "popup.html"
-  },
-  "commands": {
-      "open_prompt_palette": {
-          "suggested_key": {
-              "default": "Ctrl+Shift+P",
-              "mac": "Command+Shift+P"
-          },
-          "description": "Open Prompt Palette"
-      }
-  }
+    "manifest_version": 3,
+    "name": "Prompt Palette",
+    "version": "1.0",
+    "description": "A simple prompt management extension.",
+    "permissions": [
+        "storage",
+        "contextMenus",
+        "commands",
+        "clipboardWrite",
+        "system.display"
+    ],
+    "background": {
+        "service_worker": "js/background.js"
+    },
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "commands": {
+        "open_prompt_palette": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+P",
+                "mac": "Command+Shift+P"
+            },
+            "description": "Open Prompt Palette"
+        }
+    }
 }

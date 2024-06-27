@@ -133,6 +133,18 @@ document.addEventListener('DOMContentLoaded', () => {
         tagFilterSection.classList.toggle('hidden');
     }
 
+    // Resize window to 35% width and 100% height
+    chrome.system.display.getInfo((displays) => {
+        if (displays.length > 0) {
+            const display = displays[0]; // Use the first display
+            const width = Math.round(display.workArea.width * 0.35);
+            const height = display.workArea.height;
+            chrome.windows.getCurrent((window) => {
+                chrome.windows.update(window.id, { width: width, height: height });
+            });
+        }
+    });
+
     addPromptButton.addEventListener('click', addPrompt);
     copyPromptsButton.addEventListener('click', copySelectedPrompts);
     toggleTagFilterButton.addEventListener('click', toggleTagFilter);
