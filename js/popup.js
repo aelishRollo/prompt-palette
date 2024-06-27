@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const promptList = document.getElementById('prompt-list');
     const tagFilterSection = document.getElementById('tag-filter-section');
 
+    let currentFocusIndex = -1;
+
     function saveData(key, data) {
         localStorage.setItem(key, JSON.stringify(data));
     }
@@ -25,17 +27,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const promptItem = document.createElement('div');
             promptItem.className = 'prompt-item';
+            promptItem.setAttribute('tabindex', '0');
+            promptItem.setAttribute('role', 'button');
+            promptItem.setAttribute('aria-pressed', 'false');
             promptItem.innerHTML = `
                 <span>${prompt.text}</span>
                 <button class="add-tag" data-index="${index}">Add Tag</button>
                 <button class="edit" data-index="${index}">Edit</button>
                 <button class="delete" data-index="${index}">Delete</button>
             `;
-            promptItem.addEventListener('click', (event) => {
-                if (!event.target.classList.contains('edit') && !event.target.classList.contains('delete') && !event.target.classList.contains('add-tag')) {
-                    promptItem.classList.toggle('selected');
-                }
-            });
+            promptItem.addEventListener('click', handlePromptClick);
             promptList.appendChild(promptItem);
         });
     }
@@ -138,6 +139,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function handleKeyDown(event) {
+        const prompts = document.querySelectorAll('.prompt-item');
+        if (event.key === 'ArrowDown') {
+            currentFocusIndex = (currentFocusIndex + 1) % prompts.length;
+            prompts[currentFocusIndex].focus();
+        } else if (event.key === 'ArrowUp') {
+            currentFocusIndex = (currentFocusIndex - 1 + prompts.length) % prompts.length;
+            prompts[currentFocusIndex].focus();
+        } else if (event.key === '\'') {
+            if (document.activeElement.classList.contains('prompt-item')) {
+                document.activeElement.classList.toggle('selected');
+                const isSelected = document.activeElement.classList.contains('selected');
+                document.activeElement.setAttribute('aria-pressed', isSelected.toString());
+            }
+        } else if (event.key === 'Enter') {
+            copySelectedPrompts();
+        }
+    }
+
+    function handlePromptClick(event) {
+        const promptItem = event.currentTarget;
+        if (!event.target.classList.contains('edit') && !event.target.classList.contains('delete') && !event.target.classList.contains('add-tag')) {
+            promptItem.classList.toggle('selected');
+            const isSelected = promptItem.classList.contains('selected');
+            promptItem.setAttribute('aria-pressed', isSelected.toString());
+        }
+    }
+
     // Resize window to 35% width and 100% height
     chrome.system.display.getInfo((displays) => {
         if (displays.length > 0) {
@@ -153,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     addPromptButton.addEventListener('click', addPrompt);
     copyPromptsButton.addEventListener('click', copySelectedPrompts);
     toggleTagFilterButton.addEventListener('click', toggleTagFilter);
+    document.addEventListener('keydown', handleKeyDown);
 
     promptList.addEventListener('click', (event) => {
         if (event.target.classList.contains('delete')) {
