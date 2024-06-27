@@ -131,6 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleTagFilter() {
         tagFilterSection.classList.toggle('hidden');
+        if (tagFilterSection.classList.contains('hidden')) {
+            toggleTagFilterButton.innerText = 'Filter Prompts';
+        } else {
+            toggleTagFilterButton.innerText = 'Close Filter Menu';
+        }
     }
 
     // Resize window to 35% width and 100% height
