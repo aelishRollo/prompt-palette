@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tagFilterSelect = document.getElementById('tag-filter-select');
     const promptList = document.getElementById('prompt-list');
     const tagFilterSection = document.getElementById('tag-filter-section');
+    const kebabMenuButton = document.getElementById('kebab-menu-button');
+    const kebabMenuDropdown = document.getElementById('kebab-menu-dropdown');
 
     let currentFocusIndex = -1;
 
@@ -180,6 +182,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function toggleKebabMenu() {
+        console.log('Kebab menu button clicked'); // Debug log
+        kebabMenuDropdown.classList.toggle('hidden');
+        console.log('Kebab menu dropdown state:', kebabMenuDropdown.classList.contains('hidden') ? 'hidden' : 'visible'); // Debug log
+
+        // Force visibility for debugging
+        if (!kebabMenuDropdown.classList.contains('hidden')) {
+            kebabMenuDropdown.style.display = 'block';
+        } else {
+            kebabMenuDropdown.style.display = 'none';
+        }
+    }
+
     // Resize window to 35% width and 100% height
     chrome.system.display.getInfo((displays) => {
         if (displays.length > 0) {
@@ -195,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
     addPromptButton.addEventListener('click', addPrompt);
     copyPromptsButton.addEventListener('click', copySelectedPrompts);
     toggleTagFilterButton.addEventListener('click', toggleTagFilter);
+    kebabMenuButton.addEventListener('click', toggleKebabMenu);
     document.addEventListener('keydown', handleKeyDown);
 
     promptList.addEventListener('click', (event) => {
