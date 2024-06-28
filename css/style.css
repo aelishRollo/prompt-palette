@@ -121,6 +121,7 @@ button:hover {
 .prompt-item span {
     flex-grow: 1;
     color: #ecf0f1; /* Lighten text color */
+    font-size: 20px;
 }
 
 .prompt-item button {
