@@ -8,6 +8,14 @@
 </head>
 <body>
     <div id="app">
+        <div class="kebab-menu">
+            <button id="kebab-menu-button">☰</button>
+            <div id="kebab-menu-dropdown" class="kebab-menu-dropdown hidden">
+                <input type="file" id="import-json" accept=".json" style="display: none;">
+                <button id="export-json-button">Export Prompts </button>
+                <button id="import-json-button">Import Prompts </button>
+            </div>
+        </div>
         <h1>Prompt Palette</h1>
         <div id="prompt-management">
             <input type="text" id="prompt-input" placeholder="Enter new prompt">

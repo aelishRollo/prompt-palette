@@ -6,15 +6,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const tagFilterSelect = document.getElementById('tag-filter-select');
     const promptList = document.getElementById('prompt-list');
     const tagFilterSection = document.getElementById('tag-filter-section');
+    const kebabMenuButton = document.getElementById('kebab-menu-button');
+    const kebabMenuDropdown = document.getElementById('kebab-menu-dropdown');
+    const importJsonButton = document.getElementById('import-json-button');
+    const importJsonInput = document.getElementById('import-json');
+    const exportJsonButton = document.getElementById('export-json-button');
 
     let currentFocusIndex = -1;
 
     function saveData(key, data) {
         localStorage.setItem(key, JSON.stringify(data));
+        console.log(`Data saved under key "${key}":`, data);
     }
 
     function loadData(key) {
-        return JSON.parse(localStorage.getItem(key)) || [];
+        const data = JSON.parse(localStorage.getItem(key)) || [];
+        console.log(`Data loaded under key "${key}":`, data);
+        return data;
     }
 
     function displayPrompts() {
@@ -180,6 +188,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function toggleKebabMenu() {
+        console.log('Kebab menu button clicked'); // Debug log
+        kebabMenuDropdown.classList.toggle('hidden');
+        console.log('Kebab menu dropdown state:', kebabMenuDropdown.classList.contains('hidden') ? 'hidden' : 'visible'); // Debug log
+
+        // Force visibility for debugging
+        if (!kebabMenuDropdown.classList.contains('hidden')) {
+            kebabMenuDropdown.style.display = 'block';
+        } else {
+            kebabMenuDropdown.style.display = 'none';
+        }
+    }
+
+    function handleJsonImport(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const contents = e.target.result;
+                const newPrompts = JSON.parse(contents);
+                saveData('prompts', newPrompts);
+                displayPrompts();
+                displayTags();
+            };
+            reader.readAsText(file);
+        }
+    }
+
+    function handleJsonExport() {
+        const prompts = loadData('prompts');
+        const jsonContent = JSON.stringify(prompts, null, 2);
+        const blob = new Blob([jsonContent], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'prompts.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
     // Resize window to 35% width and 100% height
     chrome.system.display.getInfo((displays) => {
         if (displays.length > 0) {
@@ -192,9 +242,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    addPromptButton.addEventListener('click', addPrompt);
-    copyPromptsButton.addEventListener('click', copySelectedPrompts);
-    toggleTagFilterButton.addEventListener('click', toggleTagFilter);
+    // Check if elements exist before attaching event listeners
+    if (addPromptButton) addPromptButton.addEventListener('click', addPrompt);
+    else console.error('addPromptButton not found');
+    
+    if (copyPromptsButton) copyPromptsButton.addEventListener('click', copySelectedPrompts);
+    else console.error('copyPromptsButton not found');
+    
+    if (toggleTagFilterButton) toggleTagFilterButton.addEventListener('click', toggleTagFilter);
+    else console.error('toggleTagFilterButton not found');
+    
+    if (kebabMenuButton) kebabMenuButton.addEventListener('click', toggleKebabMenu);
+    else console.error('kebabMenuButton not found');
+    
+    if (importJsonButton) importJsonButton.addEventListener('click', () => importJsonInput.click());
+    else console.error('importJsonButton not found');
+    
+    if (importJsonInput) importJsonInput.addEventListener('change', handleJsonImport);
+    else console.error('importJsonInput not found');
+    
+    if (exportJsonButton) exportJsonButton.addEventListener('click', handleJsonExport);
+    else console.error('exportJsonButton not found');
+    
     document.addEventListener('keydown', handleKeyDown);
 
     promptList.addEventListener('click', (event) => {
@@ -212,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tagFilterSelect.addEventListener('change', displayPrompts);
 
+    console.log("Initial load of prompts");
     displayPrompts();
     displayTags();
 });
