@@ -133,7 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleTagFilter() {
         tagFilterSection.classList.toggle('hidden');
         if (tagFilterSection.classList.contains('hidden')) {
-            toggleTagFilterButton.innerText = 'Filter Prompts';
+            const selectedTags = Array.from(tagFilterSelect.selectedOptions).map(option => option.value);
+            if (selectedTags.length === 1 && selectedTags[0] !== "") {
+                toggleTagFilterButton.innerText = `Filter Prompts - Filtered by ${selectedTags[0]}`;
+            } else if (selectedTags.length > 1) {
+                toggleTagFilterButton.innerText = 'Filter Prompts - Filtered by multiple tags';
+            } else {
+                toggleTagFilterButton.innerText = 'Filter Prompts';
+            }
         } else {
             toggleTagFilterButton.innerText = 'Close';
         }
