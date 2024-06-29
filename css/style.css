@@ -169,7 +169,7 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
 }
 
 .prompt-item.selected {
-    background-color: #dfe6e9; /* Light background for selected */
+    background-color: #9bb7ff; /* Light background for selected */
 }
 
 .full-screen-notification {
