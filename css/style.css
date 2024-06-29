@@ -187,8 +187,8 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
 
 .kebab-menu {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 20px; /* Adjust as needed to align with the rest of the content */
+    left: 20px; /* Adjust to be in line with the left side of the content */
 }
 
 .kebab-menu-button {
