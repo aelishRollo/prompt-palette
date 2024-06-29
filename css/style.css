@@ -18,6 +18,7 @@ html, body {
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     width: 100%;
     max-width: 600px; /* Max width to constrain app size */
+    height: 100%; /* Full height */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -102,9 +103,8 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
 #prompt-list {
     margin-bottom: 20px;
     width: 100%; /* Full width */
-    max-height: 400px; /* Limit height */
-    overflow-y: auto;
     flex-grow: 1; /* Allow the prompt list to grow */
+    overflow-y: auto;
 }
 
 .prompt-item {
