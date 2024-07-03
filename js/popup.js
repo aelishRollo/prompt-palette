@@ -266,6 +266,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (exportJsonButton) exportJsonButton.addEventListener('click', handleJsonExport);
     else console.error('exportJsonButton not found');
     
+    promptInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            addPrompt();
+        }
+    });
+
     document.addEventListener('keydown', handleKeyDown);
 
     promptList.addEventListener('click', (event) => {
