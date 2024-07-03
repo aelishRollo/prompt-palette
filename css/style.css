@@ -12,12 +12,13 @@ html, body {
 }
 
 #app {
-    padding: 20px;
+    padding: 60px 20px 20px 20px; /* Added top padding for spacing */
     background-color: #ffffff; /* White background for app container */
     border-radius: 10px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     width: 100%;
     max-width: 600px; /* Max width to constrain app size */
+    height: 100%; /* Full height */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -60,7 +61,7 @@ button, .kebab-menu-button, .prompt-item button {
     margin-bottom: 15px;
     text-align: center; /* Center the text */
     flex: none;
-    box-shadow: 0px 9px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Darker shadow closer, lighter shadow further */
+    box-shadow: 0px 5px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Darker shadow closer, lighter shadow further */
 }
 
 button:active, .kebab-menu-button:active, .prompt-item button:active {
@@ -102,9 +103,8 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
 #prompt-list {
     margin-bottom: 20px;
     width: 100%; /* Full width */
-    max-height: 400px; /* Limit height */
-    overflow-y: auto;
     flex-grow: 1; /* Allow the prompt list to grow */
+    overflow-y: auto;
 }
 
 .prompt-item {
@@ -141,7 +141,7 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
     font-size: 1em;
     transition: background-color 0.3s ease;
     flex: none;
-    box-shadow: 0px 9px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Darker shadow closer, lighter shadow further */
+    box-shadow: 0px 5px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Match the shadow of the other buttons */
 }
 
 .prompt-item button.add-tag {
@@ -169,7 +169,7 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
 }
 
 .prompt-item.selected {
-    background-color: #dfe6e9; /* Light background for selected */
+    background-color: #9bb7ff; /* Light background for selected */
 }
 
 .full-screen-notification {
@@ -186,9 +186,9 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
 }
 
 .kebab-menu {
-    position: relative;
-    display: inline-block;
-    margin: 10px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
 }
 
 .kebab-menu-button {
@@ -200,7 +200,7 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
     cursor: pointer;
     border-radius: 10px;
     transition: all 0.1s ease;
-    box-shadow: 0px 9px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Darker shadow closer, lighter shadow further */
+    box-shadow: 0px 5px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Match the shadow of the other buttons */
 }
 
 .kebab-menu-dropdown {
@@ -225,7 +225,7 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
     transition: background-color 0.3s ease;
     font-size: 1em;
     border-radius: 10px;
-    box-shadow: 0px 9px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Darker shadow closer, lighter shadow further */
+    box-shadow: 0px 5px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Match the shadow of the other buttons */
 }
 
 .kebab-menu-dropdown button:hover {
