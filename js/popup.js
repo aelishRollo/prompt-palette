@@ -40,9 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
             promptItem.setAttribute('aria-pressed', 'false');
             promptItem.innerHTML = `
                 <span>${prompt.text}</span>
-                <button class="add-tag" data-index="${index}">Add Tag</button>
-                <button class="edit" data-index="${index}">Edit</button>
-                <button class="delete" data-index="${index}">Delete</button>
+                <div class="button-container">
+                    <button class="add-tag" data-index="${index}">Add Tag</button>
+                    <button class="edit" data-index="${index}">Edit</button>
+                    <button class="delete" data-index="${index}">Delete</button>
+                </div>
             `;
             promptItem.addEventListener('click', handlePromptClick);
             promptList.appendChild(promptItem);

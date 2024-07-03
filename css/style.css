@@ -49,7 +49,7 @@ h1 {
     font-size: 1.2em;
 }
 
-button, .prompt-item button {
+button, .kebab-menu-button, .prompt-item button {
     background-color: #3498db; /* Blue */
     color: white;
     border: none;
@@ -64,7 +64,7 @@ button, .prompt-item button {
     box-shadow: 0px 5px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Darker shadow closer, lighter shadow further */
 }
 
-button:active, .prompt-item button:active {
+button:active, .kebab-menu-button:active, .prompt-item button:active {
     box-shadow: 0px 3px 0px rgba(31,73,125,1), 0px 3px 6px rgba(0,0,0,0.9); /* Darker shadow closer, lighter shadow further */
     top: 6px;
 }
@@ -111,7 +111,7 @@ button:active, .prompt-item button:active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 10px; /* Adjusted padding */
     border-bottom: 1px solid #ddd;
     background-color: #f9f9f9; /* Light item background */
     border-radius: 5px;
@@ -132,42 +132,40 @@ button:active, .prompt-item button:active {
 }
 
 .prompt-item button {
-    color: #333; /* Dark text color */
-    border: 1.5px solid; /* Outline button */
-    background-color: #ffffff; /* White background */
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
     padding: 10px;
     border-radius: 5px;
     font-size: 1em;
     transition: background-color 0.3s ease;
     flex: none;
-    font-weight: bold;
+    box-shadow: 0px 5px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Match the shadow of the other buttons */
 }
 
 .prompt-item button.add-tag {
-    border-color: #3498db; /* Blue */
+    background-color: #3498db; /* Blue */
 }
 
 .prompt-item button.edit {
-    border-color: #f39c12; /* Orange */
+    background-color: #f39c12; /* Orange */
 }
 
 .prompt-item button.delete {
-    border-color: #e74c3c; /* Red */
+    background-color: #e74c3c; /* Red */
 }
 
 .prompt-item button.add-tag:hover {
     background-color: #2980b9; /* Darker Blue */
-    color: white;
 }
 
 .prompt-item button.edit:hover {
     background-color: #e67e22; /* Darker Orange */
-    color: white;
 }
 
 .prompt-item button.delete:hover {
     background-color: #c0392b; /* Darker Red */
-    color: white;
 }
 
 .prompt-item.selected {
@@ -194,20 +192,16 @@ button:active, .prompt-item button:active {
 }
 
 .kebab-menu-button {
-    background-color: #ffffff; /* White background */
-    color: #333; /* Dark text color */
-    border: 1.5px solid #3498db; /* Blue border */
+    background-color: white;
+    color: #3498db;
+    border: 1.5px solid #3498db;
     padding: 15px;
     font-size: 20px;
     cursor: pointer;
     border-radius: 10px;
     transition: all 0.1s ease;
+    box-shadow: 0px 5px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Match the shadow of the other buttons */
     font-weight: bold;
-}
-
-.kebab-menu-button:hover {
-    background-color: #2980b9; /* Darker Blue */
-    color: white;
 }
 
 .kebab-menu-dropdown {
@@ -245,4 +239,17 @@ button:active, .prompt-item button:active {
 
 .hidden {
     display: none;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.outline {
+    background-color: white;
+    color: #3498db;
+    border: 1.5px solid #3498db;
+    font-weight: bold;
 }

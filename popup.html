@@ -9,11 +9,11 @@
 <body>
     <div id="app">
         <div class="kebab-menu">
-            <button id="kebab-menu-button">☰</button>
+            <button id="kebab-menu-button" class="outline">☰</button>
             <div id="kebab-menu-dropdown" class="kebab-menu-dropdown hidden">
                 <input type="file" id="import-json" accept=".json" style="display: none;">
-                <button id="export-json-button">Export Prompts </button>
-                <button id="import-json-button">Import Prompts </button>
+                <button id="export-json-button">Export Prompts</button>
+                <button id="import-json-button">Import Prompts</button>
             </div>
         </div>
         <h1>Prompt Palette</h1>
@@ -31,6 +31,14 @@
         </div>
         <div id="prompt-list">
             <!-- Prompt list will be populated here -->
+            <div class="prompt-item">
+                <span>This is a prompt. See how the tags are all lined up on the right side? That's what we want</span>
+                <div class="button-container">
+                    <button class="add-tag outline">Add Tag</button>
+                    <button class="edit outline">Edit</button>
+                    <button class="delete outline">Delete</button>
+                </div>
+            </div>
         </div>
         <button id="copy-prompts">Copy Selected Prompts</button>
     </div>
