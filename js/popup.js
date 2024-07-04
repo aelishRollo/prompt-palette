@@ -123,10 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const textToCopy = '\n\n' + selectedPrompts.join('\n\n');
         navigator.clipboard.writeText(textToCopy).then(() => {
-            showFullScreenNotification('Prompts copied to clipboard');
+            showFullScreenNotification('Prompts copied!');
             setTimeout(() => {
                 window.close();
-            }, 1500);
+            }, 400);
         }).catch(err => {
             console.error('Could not copy text: ', err);
         });
