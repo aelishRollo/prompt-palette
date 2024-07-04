@@ -12,8 +12,8 @@
             <button id="kebab-menu-button">☰</button>
             <div id="kebab-menu-dropdown" class="kebab-menu-dropdown hidden">
                 <input type="file" id="import-json" accept=".json" style="display: none;">
-                <button id="export-json-button">Export Prompts </button>
-                <button id="import-json-button">Import Prompts </button>
+                <button id="export-json-button">Export Prompts</button>
+                <button id="import-json-button">Import Prompts</button>
             </div>
         </div>
         <h1>Prompt Palette</h1>
@@ -35,29 +35,29 @@
         <button id="copy-prompts">Copy Selected Prompts</button>
     </div>
 
-    <div id="confirmation-dialog" class="hidden">
-        <p>Are you sure you want to delete this prompt?</p>
-        <div class="confirmation-buttons">
-            <button id="confirm-yes" class="confirm-button">Yes</button>
-            <button id="confirm-no" class="confirm-button">No</button>
+    <div id="delete-dialog" class="hidden">
+        <div class="modal-content">
+            <h2>Confirm Delete</h2>
+            <button id="delete-yes">Yes</button>
+            <button id="delete-no">No</button>
         </div>
     </div>
 
     <div id="edit-dialog" class="hidden">
-        <p>Edit your prompt:</p>
-        <input type="text" id="edit-input">
-        <div class="confirmation-buttons">
-            <button id="edit-yes" class="confirm-button">Save</button>
-            <button id="edit-no" class="confirm-button">Cancel</button>
+        <div class="modal-content">
+            <h2>Edit Prompt</h2>
+            <input type="text" id="edit-input">
+            <button id="edit-yes">Save</button>
+            <button id="edit-no">Cancel</button>
         </div>
     </div>
 
     <div id="add-tag-dialog" class="hidden">
-        <p>Add a tag:</p>
-        <input type="text" id="add-tag-input">
-        <div class="confirmation-buttons">
-            <button id="add-tag-yes" class="confirm-button">Add</button>
-            <button id="add-tag-no" class="confirm-button">Cancel</button>
+        <div class="modal-content">
+            <h2>Add Tag</h2>
+            <input type="text" id="add-tag-input">
+            <button id="add-tag-yes">Add Tag</button>
+            <button id="add-tag-no">Cancel</button>
         </div>
     </div>
 
