@@ -272,6 +272,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    window.addEventListener('blur', () => {
+        window.close();
+    });
+
+
     document.addEventListener('keydown', handleKeyDown);
 
     promptList.addEventListener('click', (event) => {
