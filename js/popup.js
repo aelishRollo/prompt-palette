@@ -11,8 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const importJsonButton = document.getElementById('import-json-button');
     const importJsonInput = document.getElementById('import-json');
     const exportJsonButton = document.getElementById('export-json-button');
+    const confirmationDialog = document.getElementById('confirmation-dialog');
+    const confirmYesButton = document.getElementById('confirm-yes');
+    const confirmNoButton = document.getElementById('confirm-no');
 
     let currentFocusIndex = -1;
+    let currentDeleteIndex = null;
 
     function saveData(key, data) {
         localStorage.setItem(key, JSON.stringify(data));
@@ -81,15 +85,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function deletePrompt(index) {
-        const confirmation = confirm("Are you sure you want to delete this prompt?");
-        if (confirmation) {
-            const prompts = loadData('prompts');
-            prompts.splice(index, 1);
-            saveData('prompts', prompts);
-            displayPrompts();
-            displayTags();
-        }
+        const prompts = loadData('prompts');
+        prompts.splice(index, 1);
+        saveData('prompts', prompts);
+        displayPrompts();
+        displayTags();
     }
+
+    function confirmDelete(index) {
+        currentDeleteIndex = index;
+        confirmationDialog.classList.remove('hidden');
+        confirmYesButton.focus();
+    }
+
+    confirmYesButton.addEventListener('click', () => {
+        if (currentDeleteIndex !== null) {
+            deletePrompt(currentDeleteIndex);
+            currentDeleteIndex = null;
+            confirmationDialog.classList.add('hidden');
+        }
+    });
+
+    confirmNoButton.addEventListener('click', () => {
+        currentDeleteIndex = null;
+        confirmationDialog.classList.add('hidden');
+    });
 
     function editPrompt(index) {
         const prompts = loadData('prompts');
@@ -282,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
     promptList.addEventListener('click', (event) => {
         if (event.target.classList.contains('delete')) {
             const index = event.target.getAttribute('data-index');
-            deletePrompt(index);
+            confirmDelete(index);
         } else if (event.target.classList.contains('edit')) {
             const index = event.target.getAttribute('data-index');
             editPrompt(index);
