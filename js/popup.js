@@ -11,12 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const importJsonButton = document.getElementById('import-json-button');
     const importJsonInput = document.getElementById('import-json');
     const exportJsonButton = document.getElementById('export-json-button');
+
     const confirmationDialog = document.getElementById('confirmation-dialog');
     const confirmYesButton = document.getElementById('confirm-yes');
     const confirmNoButton = document.getElementById('confirm-no');
 
+    const editDialog = document.getElementById('edit-dialog');
+    const editInput = document.getElementById('edit-input');
+    const editYesButton = document.getElementById('edit-yes');
+    const editNoButton = document.getElementById('edit-no');
+
     let currentFocusIndex = -1;
-    let currentDeleteIndex = null;
+    let currentEditIndex = -1;
 
     function saveData(key, data) {
         localStorage.setItem(key, JSON.stringify(data));
@@ -85,43 +91,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function deletePrompt(index) {
-        const prompts = loadData('prompts');
-        prompts.splice(index, 1);
-        saveData('prompts', prompts);
-        displayPrompts();
-        displayTags();
-    }
-
-    function confirmDelete(index) {
-        currentDeleteIndex = index;
+        currentEditIndex = index;
         confirmationDialog.classList.remove('hidden');
         confirmYesButton.focus();
     }
 
     confirmYesButton.addEventListener('click', () => {
-        if (currentDeleteIndex !== null) {
-            deletePrompt(currentDeleteIndex);
-            currentDeleteIndex = null;
-            confirmationDialog.classList.add('hidden');
-        }
+        const prompts = loadData('prompts');
+        prompts.splice(currentEditIndex, 1);
+        saveData('prompts', prompts);
+        displayPrompts();
+        displayTags();
+        confirmationDialog.classList.add('hidden');
     });
 
     confirmNoButton.addEventListener('click', () => {
-        currentDeleteIndex = null;
         confirmationDialog.classList.add('hidden');
     });
 
     function editPrompt(index) {
+        currentEditIndex = index;
         const prompts = loadData('prompts');
-        const currentPrompt = prompts[index];
-        const newPrompt = prompt("Edit your prompt:", currentPrompt.text);
-        if (newPrompt !== null && newPrompt.trim() !== "") {
-            prompts[index].text = newPrompt.trim();
+        editInput.value = prompts[index].text;
+        editDialog.classList.remove('hidden');
+        editInput.focus();
+    }
+
+    editYesButton.addEventListener('click', () => {
+        const prompts = loadData('prompts');
+        const newText = editInput.value.trim();
+        if (newText !== "") {
+            prompts[currentEditIndex].text = newText;
             saveData('prompts', prompts);
             displayPrompts();
             displayTags();
         }
-    }
+        editDialog.classList.add('hidden');
+    });
+
+    editNoButton.addEventListener('click', () => {
+        editDialog.classList.add('hidden');
+    });
 
     function addTagToPrompt(index) {
         const tag = prompt("Enter a tag:");
@@ -296,13 +306,12 @@ document.addEventListener('DOMContentLoaded', () => {
         window.close();
     });
 
-
     document.addEventListener('keydown', handleKeyDown);
 
     promptList.addEventListener('click', (event) => {
         if (event.target.classList.contains('delete')) {
             const index = event.target.getAttribute('data-index');
-            confirmDelete(index);
+            deletePrompt(index);
         } else if (event.target.classList.contains('edit')) {
             const index = event.target.getAttribute('data-index');
             editPrompt(index);
