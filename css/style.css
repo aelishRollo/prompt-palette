@@ -318,16 +318,13 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
     align-items: center; /* Center content horizontally */
 }
 
-#edit-input {
-    width: 100%;
+#edit-dialog input {
+    width: 100%; /* Ensure the input takes the full width of its container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
     padding: 10px;
-    border: 1px solid #bdc3c7; /* Gray */
-    border-radius: 5px;
-    background-color: #ecf0f1; /* Light input background */
-    color: #333; /* Dark text */
-    font-size: 1.2em;
     margin-bottom: 20px;
-    text-align: center; /* Center text horizontally */
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 .confirmation-buttons {
