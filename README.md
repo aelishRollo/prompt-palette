@@ -1,6 +1,6 @@
-Prompt Palette is an open-source Chromium browser extension meant to increase development velocity for anyone using AI. 
+# Prompt Palette is an open-source Chromium browser extension that helps you store, manage, and use the best prompts, wherever you are in the browser. 
 
-Prompt Palette helps you store and manage, and use the best prompts, wherever you are in the browser. 
+Prompt Palette is meant to increase development velocity for anyone using AI. 
 
 Prompt Palette is meant to be sleek, fast, with an intuitive UI. As useful as possible while getting out of your way.
 
