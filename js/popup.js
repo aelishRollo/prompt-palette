@@ -30,16 +30,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentEditIndex = -1;
     let currentDeleteIndex = -1;
     let currentAddTagIndex = -1;
+    let kebabMenuClicked = false;
 
     function saveData(key, data) {
-        localStorage.setItem(key, JSON.stringify(data));
-        console.log(`Data saved under key "${key}":`, data);
+        try {
+            localStorage.setItem(key, JSON.stringify(data));
+            console.log(`Data saved under key "${key}":`, data);
+        } catch (error) {
+            console.error(`Failed to save data under key "${key}":`, error);
+        }
     }
 
     function loadData(key) {
-        const data = JSON.parse(localStorage.getItem(key)) || [];
-        console.log(`Data loaded under key "${key}":`, data);
-        return data;
+        try {
+            const data = JSON.parse(localStorage.getItem(key)) || [];
+            console.log(`Data loaded under key "${key}":`, data);
+            return data;
+        } catch (error) {
+            console.error(`Failed to load data under key "${key}":`, error);
+            return [];
+        }
     }
 
     function displayPrompts() {
@@ -103,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         saveData('prompts', prompts);
         displayPrompts();
         displayTags();
-        deleteDialog.classList.add('hidden');
+        toggleDialog(deleteDialog, false);
     }
 
     function editPrompt() {
@@ -114,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             saveData('prompts', prompts);
             displayPrompts();
             displayTags();
-            editDialog.classList.add('hidden');
+            toggleDialog(editDialog, false);
         }
     }
 
@@ -127,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 saveData('prompts', prompts);
                 displayTags();
             }
-            addTagDialog.classList.add('hidden');
+            toggleDialog(addTagDialog, false);
         }
     }
 
@@ -207,6 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function toggleKebabMenu() {
+        kebabMenuClicked = !kebabMenuClicked;
         console.log('Kebab menu button clicked'); // Debug log
         kebabMenuDropdown.classList.toggle('hidden');
         console.log('Kebab menu dropdown state:', kebabMenuDropdown.classList.contains('hidden') ? 'hidden' : 'visible'); // Debug log
@@ -246,6 +257,10 @@ document.addEventListener('DOMContentLoaded', () => {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    }
+
+    function toggleDialog(dialog, show) {
+        dialog.classList.toggle('hidden', !show);
     }
 
     // Resize window to 35% width and 100% height
@@ -289,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('blur', () => {
-        window.close();
+        if (!kebabMenuClicked) window.close();
     });
 
     document.addEventListener('keydown', handleKeyDown);
@@ -297,32 +312,31 @@ document.addEventListener('DOMContentLoaded', () => {
     promptList.addEventListener('click', (event) => {
         if (event.target.classList.contains('delete')) {
             currentDeleteIndex = event.target.getAttribute('data-index');
-            deleteDialog.classList.remove('hidden');
+            toggleDialog(deleteDialog, true);
         } else if (event.target.classList.contains('edit')) {
             currentEditIndex = event.target.getAttribute('data-index');
-            const prompts = loadData('prompts');
-            editInput.value = prompts[currentEditIndex].text;
-            editDialog.classList.remove('hidden');
+            editInput.value = loadData('prompts')[currentEditIndex].text;
+            toggleDialog(editDialog, true);
         } else if (event.target.classList.contains('add-tag')) {
             currentAddTagIndex = event.target.getAttribute('data-index');
             addTagInput.value = ''; // Clear previous value
-            addTagDialog.classList.remove('hidden');
+            toggleDialog(addTagDialog, true);
         }
     });
 
     if (deleteConfirmButton) deleteConfirmButton.addEventListener('click', deletePrompt);
     if (deleteCancelButton) deleteCancelButton.addEventListener('click', () => {
-        deleteDialog.classList.add('hidden');
+        toggleDialog(deleteDialog, false);
     });
 
     if (editConfirmButton) editConfirmButton.addEventListener('click', editPrompt);
     if (editCancelButton) editCancelButton.addEventListener('click', () => {
-        editDialog.classList.add('hidden');
+        toggleDialog(editDialog, false);
     });
 
     if (addTagConfirmButton) addTagConfirmButton.addEventListener('click', addTagToPrompt);
     if (addTagCancelButton) addTagCancelButton.addEventListener('click', () => {
-        addTagDialog.classList.add('hidden');
+        toggleDialog(addTagDialog, false);
     });
 
     tagFilterSelect.addEventListener('change', displayPrompts);
