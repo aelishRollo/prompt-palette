@@ -8,14 +8,39 @@
 </head>
 <body>
     <div id="app">
-        <div class="kebab-menu">
-            <button id="kebab-menu-button">☰</button>
-            <div id="kebab-menu-dropdown" class="kebab-menu-dropdown hidden">
-                <input type="file" id="import-json" accept=".json" style="display: none;">
-                <button id="export-json-button">Export Prompts</button>
-                <button id="import-json-button">Import Prompts</button>
+        <header>
+            <div class="kebab-menu">
+                <button id="kebab-menu-button">☰</button>
+                <div id="kebab-menu-dropdown" class="kebab-menu-dropdown hidden">
+                    <input type="file" id="import-json" accept=".json" style="display: none;">
+                    <button id="export-json-button">Export Prompts</button>
+                    <button id="import-json-button">Import Prompts</button>
+                </div>
             </div>
-        </div>
+            <!--
+            created:
+             div class='help-menu'
+             button id='help-button'
+             div id='help-menu-dropdown'
+    
+            -->
+            
+            <div class="help-menu">
+                <button id="help-button">?</button>
+                <div id="help-menu-dropdown" class="kebab-menu-dropdown hidden">
+                    <input type="file" id="import-json" accept=".json" style="display: none;">
+                    <button id="export-json-button">Export Prompts</button>
+                    <button id="import-json-button">Import Prompts</button>
+                </div>
+            </div>
+
+            <!-- Putting the buttons in a header.
+            Need to give the header its own vertical room
+            Make their positions not be absolute anymore.
+            Just put them in the upper left of the header container. 
+            Probably use flexbox for this -->
+        </header>
+        
         <h1>Prompt Palette</h1>
         <div id="prompt-management">
             <input type="text" id="prompt-input" placeholder="Enter new prompt">

@@ -32,6 +32,10 @@ h1 {
     text-align: center;
 }
 
+header {
+    height: 100px;
+}
+
 #prompt-management {
     display: flex;
     gap: 10px;
@@ -188,6 +192,12 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
 .kebab-menu {
     position: absolute;
     top: 20px;
+    left: 20px;
+}
+
+.help-menu {
+    position: absolute;
+    top: 90px;
     left: 20px;
 }
 
