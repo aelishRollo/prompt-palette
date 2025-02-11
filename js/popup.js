@@ -230,6 +230,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function mergePrompt(p1, p2) {
+        const combinedTags = new Set([...p1.tags, ...p2.tags]);
+        const tags = Array.from(combinedTags);
+
+        return {
+            text: p1.text,
+            tags,
+        };
+    }
+
+    function arePromptsTheSame(p1, p2) {
+        return p1.text === p2.text;
+    }
+
     function handleJsonImport(event) {
         const file = event.target.files[0];
         if (file) {
@@ -237,7 +251,29 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.onload = function(e) {
                 const contents = e.target.result;
                 const newPrompts = JSON.parse(contents);
-                saveData('prompts', newPrompts);
+
+                const existing = loadData('prompts');
+
+                const nextData = [];
+
+                for (const newPrompt of newPrompts) {
+                    const found = existing.find(existingPrompt => arePromptsTheSame(existingPrompt, newPrompt));
+                    if (found) {
+                        const prompt = mergePrompt(newPrompt, found);
+                        nextData.push(prompt);
+                    } else {
+                        nextData.push(newPrompt);
+                    }
+                }
+
+                for (const entry of existing) {
+                    const found = nextData.find(nextEntry => arePromptsTheSame(nextEntry, entry));
+                    if (!found) {
+                        nextData.push(entry);
+                    }
+                }
+
+                saveData('prompts', nextData);
                 displayPrompts();
                 displayTags();
             };
@@ -278,25 +314,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if elements exist before attaching event listeners
     if (addPromptButton) addPromptButton.addEventListener('click', addPrompt);
     else console.error('addPromptButton not found');
-    
+
     if (copyPromptsButton) copyPromptsButton.addEventListener('click', copySelectedPrompts);
     else console.error('copyPromptsButton not found');
-    
+
     if (toggleTagFilterButton) toggleTagFilterButton.addEventListener('click', toggleTagFilter);
     else console.error('toggleTagFilterButton not found');
-    
+
     if (kebabMenuButton) kebabMenuButton.addEventListener('click', toggleKebabMenu);
     else console.error('kebabMenuButton not found');
-    
+
     if (importJsonButton) importJsonButton.addEventListener('click', () => importJsonInput.click());
     else console.error('importJsonButton not found');
-    
+
     if (importJsonInput) importJsonInput.addEventListener('change', handleJsonImport);
     else console.error('importJsonInput not found');
-    
+
     if (exportJsonButton) exportJsonButton.addEventListener('click', handleJsonExport);
     else console.error('exportJsonButton not found');
-    
+
     promptInput.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             addPrompt();
