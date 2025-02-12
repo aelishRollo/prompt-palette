@@ -231,7 +231,7 @@ button:active, .kebab-menu-button:active, .help-menu-button:active, .prompt-item
 
 .help-menu-dropdown {
     position: absolute;
-    background-color: #ffffff; 
+    background-color: #e7e7e7; 
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     border-radius: 10px;
