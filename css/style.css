@@ -241,6 +241,19 @@ button:active, .kebab-menu-button:active, .help-menu-button:active, .prompt-item
     outline: 1px solid black;
 }
 
+.help-text-container {
+    padding: 20px;
+   
+}
+
+.help-text-container h2 {
+    font-size: 28px;
+}
+
+.help-text-container p {
+    font-size: 14px;
+}
+
 .kebab-menu-dropdown button {
     color: #333; /* Dark text color */
     padding: 12px 16px;
