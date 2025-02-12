@@ -25,7 +25,21 @@ Prompt Palette is meant to be sleek, fast, with an intuitive UI. As useful as po
 Prompt Palette will not ask for your data. Your data is yours.
 
 
-## Tech Used: ![HTML BADGE](https://img.shields.io/static/v1?label=|&message=HTML&color=3c7f5d&style=plastic&logo=html5)![CSS BADGE](https://img.shields.io/static/v1?label=|&message=CSS&color=285f65&style=plastic&logo=css3)![JAVASCRIPT BADGE](https://img.shields.io/static/v1?label=|&message=JAVASCRIPT&color=3c7f5d&style=plastic&logo=javascript)![CHATGPT BADGE](https://img.shields.io/static/v1?label=|&message=CHATGPT&color=285f65&style=plastic&logo=openai)
+
+<h2>How to use:</h2> <h3> Basics:</h3>
+                        <p>Press <strong>cmd + shift + p</strong> to open the extension anywhere in the browser</p>
+                        <p>You can add a new prompt to your library by typing or pasting it into the “Enter new prompt” dialogue, then hitting enter or clicking the “Add Prompt” button</p>
+                        <p>Use the <strong>up</strong> and <strong>down</strong> keys to navigate through the prompts in your library</p>
+                        <p>Hit <strong>enter</strong> to select a prompt</p>
+                        <p>Press <strong>shift + enter</strong> to copy all your selected prompts to your clipboard, automatically closing the extension window. Alternatively you can click the “Copy Selected Prompts” button at the bottom</p>
+                        <h3>Tags: </h3>
+                        <p>You can add tags to prompts for easy access to prompts that share a common trait. For example, “Writing”, “Coding”, or “Therapy”.</p>
+                        <p>You can add tags by clicking the “Edit” button on one of your prompts</p>
+                        <p>Click the “Filter Prompts” button to select a tag to show</p>
+
+#
+
+## Tech Used: ![HTML BADGE](https://img.shields.io/static/v1?label=|&message=HTML&color=3c7f5d&style=plastic&logo=html5)![CSS BADGE](https://img.shields.io/static/v1?label=|&message=CSS&color=385f65&style=plastic&logo=css3)![JAVASCRIPT BADGE](https://img.shields.io/static/v1?label=|&message=JAVASCRIPT&color=3c7f5d&style=plastic&logo=javascript)![CHATGPT BADGE](https://img.shields.io/static/v1?label=|&message=CHATGPT&color=285f65&style=plastic&logo=openai)
 
 ## Lessons Learned:
 
