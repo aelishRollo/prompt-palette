@@ -32,6 +32,10 @@ h1 {
     text-align: center;
 }
 
+header {
+    height: 100px;
+}
+
 #prompt-management {
     display: flex;
     gap: 10px;
@@ -49,7 +53,7 @@ h1 {
     font-size: 1.2em;
 }
 
-button, .kebab-menu-button, .prompt-item button {
+button, .kebab-menu-button, .prompt-item button, .help-menu-button {
     background-color: #3498db; /* Blue */
     color: white;
     border: none;
@@ -64,7 +68,7 @@ button, .kebab-menu-button, .prompt-item button {
     box-shadow: 0px 5px 0px rgba(31,73,125,1), 0px 9px 25px rgba(0,0,0,0.7); /* Darker shadow closer, lighter shadow further */
 }
 
-button:active, .kebab-menu-button:active, .prompt-item button:active {
+button:active, .kebab-menu-button:active, .help-menu-button:active, .prompt-item button:active {
     box-shadow: 0px 3px 0px rgba(31,73,125,1), 0px 3px 6px rgba(0,0,0,0.9); /* Darker shadow closer, lighter shadow further */
     top: 6px;
 }
@@ -191,6 +195,12 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
     left: 20px;
 }
 
+.help-menu {
+    position: absolute;
+    top: 90px;
+    left: 20px;
+}
+
 .kebab-menu-button {
     background-color: #3498db;
     color: white;
@@ -203,7 +213,7 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
     box-shadow: none; /* Remove shadow for outline */
 }
 
-.kebab-menu-button:hover {
+.kebab-menu-button:hover, .help-menu-button:hover {
     background-color: #2980b9; /* Darker Blue */
     border-color: #2980b9; /* Match hover color */
 }
@@ -215,8 +225,33 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     border-radius: 10px;
-    padding: 10px 0; /* Add padding to match example */
-    width: 200px; /* Set width to match example */
+    padding: 10px 0; 
+    width: 200px; 
+}
+
+.help-menu-dropdown {
+    position: absolute;
+    background-color: #e7e7e7; 
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 10px;
+    padding: 10px 0; 
+    width: 538px; 
+    height: 600px;
+    outline: 1px solid black;
+}
+
+.help-text-container {
+    padding: 20px;
+   
+}
+
+.help-text-container h2 {
+    font-size: 28px;
+}
+
+.help-text-container p {
+    font-size: 16px;
 }
 
 .kebab-menu-dropdown button {
@@ -235,6 +270,7 @@ button:active, .kebab-menu-button:active, .prompt-item button:active {
     box-shadow: none; /* Remove shadow */
     border-left: 3px solid transparent; /* Add left border for hover effect */
 }
+
 
 .kebab-menu-dropdown button:hover {
     background-color: #ecf0f1; /* Light hover background */

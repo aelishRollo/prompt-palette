@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tagFilterSection = document.getElementById('tag-filter-section');
     const kebabMenuButton = document.getElementById('kebab-menu-button');
     const kebabMenuDropdown = document.getElementById('kebab-menu-dropdown');
+    const helpMenuButton = document.getElementById('help-menu-button');
+    const helpMenuDropdown = document.getElementById('help-menu-dropdown');
     const importJsonButton = document.getElementById('import-json-button');
     const importJsonInput = document.getElementById('import-json');
     const exportJsonButton = document.getElementById('export-json-button');
@@ -31,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentDeleteIndex = -1;
     let currentAddTagIndex = -1;
     let kebabMenuClicked = false;
+    let helpMenuClicked = false;
 
     function saveData(key, data) {
         try {
@@ -230,6 +233,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function toggleHelpMenu() {
+        helpMenuClicked = !helpMenuClicked;
+        console.log('Help menu button clicked'); // Debug log
+        console.log(`helpMenuDropdown is ${helpMenuDropdown}`)
+        helpMenuDropdown.classList.toggle('hidden');
+        
+
+    }
+
     function mergePrompt(p1, p2) {
         const combinedTags = new Set([...p1.tags, ...p2.tags]);
         const tags = Array.from(combinedTags);
@@ -323,6 +335,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (kebabMenuButton) kebabMenuButton.addEventListener('click', toggleKebabMenu);
     else console.error('kebabMenuButton not found');
+
+    if (helpMenuButton) helpMenuButton.addEventListener('click', toggleHelpMenu);
+    else console.error('helpMenuButton not found');
 
     if (importJsonButton) importJsonButton.addEventListener('click', () => importJsonInput.click());
     else console.error('importJsonButton not found');
