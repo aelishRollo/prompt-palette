@@ -6,9 +6,13 @@
   "author": "Alexander Rollison",
   "license": "MIT",
   "scripts": {
-    "start": "echo 'Starting extension...' && exit 0"
+    "start": "echo 'Starting extension...' && exit 0",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "check-types": "tsc --noEmit"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.300"
+    "@types/chrome": "^0.0.300",
+    "typescript": "^5.7.3"
   }
 }
