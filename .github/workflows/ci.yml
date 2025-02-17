@@ -44,4 +44,4 @@ jobs:
         run: npm run build
 
       - name: Ensure built artifacts were checked into git for this commit
-        run: git diff --exit-code || (echo "Compiled artifacts in js folder are out of date. Please commit the latest built artifacts.")
+        run: git diff --exit-code || (echo "Compiled artifacts in js folder are out of date. Please commit the latest built artifacts." && exit 1)
