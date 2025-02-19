@@ -29,7 +29,7 @@ Prompt Palette will not ask for your data. Your data is yours.
 <h2>How to use:</h2>
 
 <h3>Basics:</h3>
-<p>Press <strong>cmd + shift + p</strong> to open the extension when using your browser. Your prompts will be available when viewing any site</p>
+<p>Press <strong>option + shift + p</strong> to open the extension when using your browser. Your prompts will be available when viewing any site</p>
 <p>You can add a new prompt to your library by typing or pasting it into the “Enter new prompt” dialogue, then hitting enter or clicking the “Add Prompt” button</p>
 <p>Use the <strong>up</strong> and <strong>down</strong> keys to navigate through the prompts in your library</p>
 <p>Hit <strong>enter</strong> to select a prompt</p>
@@ -53,5 +53,3 @@ This was the first browser extension I developed, so it taught me a lot about ho
 I had quite a bit of fun handcrafting the UI to be modern and reducing how visually busy it was. I also learned a lot about designing a snappy and modern UX. I'm passionate about crafting full-stack software that just feels good to use. This taught me a lot about what makes for good UI/UX
 
 I've learned a lot about taking ownership of software, how even with a defined scope there are so many little features and requirements that are not evident from the outset. So taking ownership of a piece of software means using it and incorporating feedback, figuring out how to fix the things that were never considered, as well as updating your vision for the project based on feedback from using it.
-
-
