@@ -4,34 +4,34 @@ type SavedPrompt = {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const addPromptButton = document.getElementById('add-prompt')!;
-    const copyPromptsButton = document.getElementById('copy-prompts')!;
-    const toggleTagFilterButton = document.getElementById('toggle-tag-filter')!;
-    const promptInput = document.getElementById('prompt-input')! as HTMLInputElement;
-    const tagFilterSelect = document.getElementById('tag-filter-select')! as HTMLSelectElement;
-    const promptList = document.getElementById('prompt-list')!;
-    const tagFilterSection = document.getElementById('tag-filter-section')!;
-    const kebabMenuButton = document.getElementById('kebab-menu-button')!;
-    const kebabMenuDropdown = document.getElementById('kebab-menu-dropdown')!;
-    const helpMenuButton = document.getElementById('help-menu-button')!;
-    const helpMenuDropdown = document.getElementById('help-menu-dropdown')!;
-    const importJsonButton = document.getElementById('import-json-button')!;
-    const importJsonInput = document.getElementById('import-json')! as HTMLInputElement;
-    const exportJsonButton = document.getElementById('export-json-button')!;
+    const addPromptButton = document.getElementById('add-prompt') as HTMLButtonElement;
+    const copyPromptsButton = document.getElementById('copy-prompts') as HTMLButtonElement;
+    const toggleTagFilterButton = document.getElementById('toggle-tag-filter') as HTMLButtonElement;
+    const promptInput = document.getElementById('prompt-input') as HTMLInputElement;
+    const tagFilterSelect = document.getElementById('tag-filter-select') as HTMLSelectElement;
+    const promptList = document.getElementById('prompt-list') as HTMLDivElement;
+    const tagFilterSection = document.getElementById('tag-filter-section') as HTMLDivElement;
+    const kebabMenuButton = document.getElementById('kebab-menu-button') as HTMLButtonElement;
+    const kebabMenuDropdown = document.getElementById('kebab-menu-dropdown') as HTMLDivElement;
+    const helpMenuButton = document.getElementById('help-menu-button') as HTMLButtonElement;
+    const helpMenuDropdown = document.getElementById('help-menu-dropdown') as HTMLDivElement
+    const importJsonButton = document.getElementById('import-json-button') as HTMLButtonElement;
+    const importJsonInput = document.getElementById('import-json') as HTMLInputElement;
+    const exportJsonButton = document.getElementById('export-json-button') as HTMLButtonElement;
 
-    const deleteDialog = document.getElementById('delete-dialog')!;
-    const deleteConfirmButton = document.getElementById('delete-yes')!;
-    const deleteCancelButton = document.getElementById('delete-no')!;
+    const deleteDialog = document.getElementById('delete-dialog') as HTMLDivElement;
+    const deleteConfirmButton = document.getElementById('delete-yes') as HTMLButtonElement;
+    const deleteCancelButton = document.getElementById('delete-no') as HTMLButtonElement;
 
-    const editDialog = document.getElementById('edit-dialog')!;
-    const editInput = document.getElementById('edit-input')! as HTMLInputElement;
-    const editConfirmButton = document.getElementById('edit-yes')!;
-    const editCancelButton = document.getElementById('edit-no')!;
+    const editDialog = document.getElementById('edit-dialog') as HTMLDivElement;
+    const editInput = document.getElementById('edit-input') as HTMLInputElement;
+    const editConfirmButton = document.getElementById('edit-yes') as HTMLButtonElement;
+    const editCancelButton = document.getElementById('edit-no') as HTMLButtonElement;
 
-    const addTagDialog = document.getElementById('add-tag-dialog')!;
-    const addTagInput = document.getElementById('add-tag-input')! as HTMLInputElement;
-    const addTagConfirmButton = document.getElementById('add-tag-yes')!;
-    const addTagCancelButton = document.getElementById('add-tag-no')!;
+    const addTagDialog = document.getElementById('add-tag-dialog') as HTMLDivElement;
+    const addTagInput = document.getElementById('add-tag-input') as HTMLInputElement;
+    const addTagConfirmButton = document.getElementById('add-tag-yes') as HTMLButtonElement;
+    const addTagCancelButton = document.getElementById('add-tag-no') as HTMLButtonElement;
 
     let currentFocusIndex = -1;
     let currentEditIndex = -1;
