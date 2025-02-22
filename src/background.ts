@@ -18,6 +18,10 @@ chrome.runtime.onInstalled.addListener(() => {
     }
   });
 
+  chrome.action.onClicked.addListener((tab) => {
+    openPopup();
+  });
+
   function openPopup() {
     chrome.windows.create({
         url: chrome.runtime.getURL("popup.html"),
