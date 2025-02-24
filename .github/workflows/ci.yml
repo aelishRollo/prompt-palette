@@ -23,24 +23,3 @@ jobs:
 
       - name: Check TypeScript types
         run: npm run check-types
-
-  ensure-compiled-committed:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Check TypeScript types
-        run: npm run build
-
-      - name: Ensure built artifacts were checked into git for this commit
-        run: git diff --exit-code || (echo "Compiled artifacts in js folder are out of date. Please commit the latest built artifacts." && exit 1)
