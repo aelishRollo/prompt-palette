@@ -1,32 +1,37 @@
+type SavedPrompt = {
+    text: string;
+    tags: string[];
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    const addPromptButton = document.getElementById('add-prompt');
-    const copyPromptsButton = document.getElementById('copy-prompts');
-    const toggleTagFilterButton = document.getElementById('toggle-tag-filter');
-    const promptInput = document.getElementById('prompt-input');
-    const tagFilterSelect = document.getElementById('tag-filter-select');
-    const promptList = document.getElementById('prompt-list');
-    const tagFilterSection = document.getElementById('tag-filter-section');
-    const kebabMenuButton = document.getElementById('kebab-menu-button');
-    const kebabMenuDropdown = document.getElementById('kebab-menu-dropdown');
-    const helpMenuButton = document.getElementById('help-menu-button');
-    const helpMenuDropdown = document.getElementById('help-menu-dropdown');
-    const importJsonButton = document.getElementById('import-json-button');
-    const importJsonInput = document.getElementById('import-json');
-    const exportJsonButton = document.getElementById('export-json-button');
+    const addPromptButton = document.getElementById('add-prompt') as HTMLButtonElement;
+    const copyPromptsButton = document.getElementById('copy-prompts') as HTMLButtonElement;
+    const toggleTagFilterButton = document.getElementById('toggle-tag-filter') as HTMLButtonElement;
+    const promptInput = document.getElementById('prompt-input') as HTMLInputElement;
+    const tagFilterSelect = document.getElementById('tag-filter-select') as HTMLSelectElement;
+    const promptList = document.getElementById('prompt-list') as HTMLDivElement;
+    const tagFilterSection = document.getElementById('tag-filter-section') as HTMLDivElement;
+    const kebabMenuButton = document.getElementById('kebab-menu-button') as HTMLButtonElement;
+    const kebabMenuDropdown = document.getElementById('kebab-menu-dropdown') as HTMLDivElement;
+    const helpMenuButton = document.getElementById('help-menu-button') as HTMLButtonElement;
+    const helpMenuDropdown = document.getElementById('help-menu-dropdown') as HTMLDivElement
+    const importJsonButton = document.getElementById('import-json-button') as HTMLButtonElement;
+    const importJsonInput = document.getElementById('import-json') as HTMLInputElement;
+    const exportJsonButton = document.getElementById('export-json-button') as HTMLButtonElement;
 
-    const deleteDialog = document.getElementById('delete-dialog');
-    const deleteConfirmButton = document.getElementById('delete-yes');
-    const deleteCancelButton = document.getElementById('delete-no');
+    const deleteDialog = document.getElementById('delete-dialog') as HTMLDivElement;
+    const deleteConfirmButton = document.getElementById('delete-yes') as HTMLButtonElement;
+    const deleteCancelButton = document.getElementById('delete-no') as HTMLButtonElement;
 
-    const editDialog = document.getElementById('edit-dialog');
-    const editInput = document.getElementById('edit-input');
-    const editConfirmButton = document.getElementById('edit-yes');
-    const editCancelButton = document.getElementById('edit-no');
+    const editDialog = document.getElementById('edit-dialog') as HTMLDivElement;
+    const editInput = document.getElementById('edit-input') as HTMLInputElement;
+    const editConfirmButton = document.getElementById('edit-yes') as HTMLButtonElement;
+    const editCancelButton = document.getElementById('edit-no') as HTMLButtonElement;
 
-    const addTagDialog = document.getElementById('add-tag-dialog');
-    const addTagInput = document.getElementById('add-tag-input');
-    const addTagConfirmButton = document.getElementById('add-tag-yes');
-    const addTagCancelButton = document.getElementById('add-tag-no');
+    const addTagDialog = document.getElementById('add-tag-dialog') as HTMLDivElement;
+    const addTagInput = document.getElementById('add-tag-input') as HTMLInputElement;
+    const addTagConfirmButton = document.getElementById('add-tag-yes') as HTMLButtonElement;
+    const addTagCancelButton = document.getElementById('add-tag-no') as HTMLButtonElement;
 
     let currentFocusIndex = -1;
     let currentEditIndex = -1;
@@ -35,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let kebabMenuClicked = false;
     let helpMenuClicked = false;
 
-    function saveData(key, data) {
+    function saveData(key: 'prompts', data: SavedPrompt[]) {
         try {
             localStorage.setItem(key, JSON.stringify(data));
             console.log(`Data saved under key "${key}":`, data);
@@ -44,9 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function loadData(key) {
+    function loadData(key: 'prompts'): SavedPrompt[] {
         try {
-            const data = JSON.parse(localStorage.getItem(key)) || [];
+            const storedItem = localStorage.getItem(key);
+            const data = storedItem ? JSON.parse(storedItem) : [];
             console.log(`Data loaded under key "${key}":`, data);
             return data;
         } catch (error) {
@@ -83,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayTags() {
         const prompts = loadData('prompts');
-        const tags = new Set();
+        const tags = new Set<string>();
         prompts.forEach(prompt => {
             prompt.tags.forEach(tag => {
                 tags.add(tag);
@@ -145,9 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function copySelectedPrompts() {
-        const selectedPrompts = [];
+        const selectedPrompts: string[] = [];
         document.querySelectorAll('.prompt-item.selected').forEach(item => {
-            const index = item.querySelector('.edit').getAttribute('data-index');
+            const index = parseInt(item.querySelector('.edit')!.getAttribute('data-index')!);
             selectedPrompts.push(loadData('prompts')[index].text);
         });
         const textToCopy = '\n\n' + selectedPrompts.join('\n\n');
@@ -161,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function showFullScreenNotification(message) {
+    function showFullScreenNotification(message: string) {
         const notification = document.createElement('div');
         notification.className = 'full-screen-notification';
         notification.innerText = message;
@@ -185,8 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function handleKeyDown(event) {
-        const prompts = document.querySelectorAll('.prompt-item');
+    function handleKeyDown(event: KeyboardEvent) {
+        const prompts = document.querySelectorAll('.prompt-item') as NodeListOf<HTMLDivElement>;
         if (event.key === 'ArrowDown') {
             currentFocusIndex = (currentFocusIndex + 1) % prompts.length;
             prompts[currentFocusIndex].focus();
@@ -194,25 +200,30 @@ document.addEventListener('DOMContentLoaded', () => {
             currentFocusIndex = (currentFocusIndex - 1 + prompts.length) % prompts.length;
             prompts[currentFocusIndex].focus();
         } else if (event.key === '\'') {
-            if (document.activeElement.classList.contains('prompt-item')) {
-                document.activeElement.classList.toggle('selected');
-                const isSelected = document.activeElement.classList.contains('selected');
-                document.activeElement.setAttribute('aria-pressed', isSelected.toString());
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('prompt-item')) {
+                activeElement.classList.toggle('selected');
+                const isSelected = activeElement.classList.contains('selected');
+                activeElement.setAttribute('aria-pressed', isSelected.toString());
             }
         } else if (event.key === 'Enter') {
             if (event.shiftKey) {
                 copySelectedPrompts();
-            } else if (document.activeElement.classList.contains('prompt-item')) {
-                document.activeElement.classList.toggle('selected');
-                const isSelected = document.activeElement.classList.contains('selected');
-                document.activeElement.setAttribute('aria-pressed', isSelected.toString());
+            } else {
+                const activeElement = document.activeElement;
+                if (activeElement && activeElement.classList.contains('prompt-item')) {
+                    activeElement.classList.toggle('selected');
+                    const isSelected = activeElement.classList.contains('selected');
+                    activeElement.setAttribute('aria-pressed', isSelected.toString());
+                }
             }
         }
     }
 
-    function handlePromptClick(event) {
-        const promptItem = event.currentTarget;
-        if (!event.target.classList.contains('edit') && !event.target.classList.contains('delete') && !event.target.classList.contains('add-tag')) {
+    function handlePromptClick(event: MouseEvent) {
+        const promptItem = event.currentTarget as HTMLDivElement;
+        const target = event.target as HTMLDivElement;
+        if (!target.classList.contains('edit') && !target.classList.contains('delete') && !target.classList.contains('add-tag')) {
             promptItem.classList.toggle('selected');
             const isSelected = promptItem.classList.contains('selected');
             promptItem.setAttribute('aria-pressed', isSelected.toString());
@@ -238,11 +249,11 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Help menu button clicked'); // Debug log
         console.log(`helpMenuDropdown is ${helpMenuDropdown}`)
         helpMenuDropdown.classList.toggle('hidden');
-        
+
 
     }
 
-    function mergePrompt(p1, p2) {
+    function mergePrompt(p1: SavedPrompt, p2: SavedPrompt): SavedPrompt {
         const combinedTags = new Set([...p1.tags, ...p2.tags]);
         const tags = Array.from(combinedTags);
 
@@ -252,17 +263,21 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    function arePromptsTheSame(p1, p2) {
+    function arePromptsTheSame(p1: SavedPrompt, p2: SavedPrompt) {
         return p1.text === p2.text;
     }
 
-    function handleJsonImport(event) {
-        const file = event.target.files[0];
+    function handleJsonImport(event: Event) {
+        const file = (event.target as HTMLInputElement).files![0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const contents = e.target.result;
-                const newPrompts = JSON.parse(contents);
+                const contents = e.target?.result;
+                if (!contents) {
+                    return;
+                }
+
+                const newPrompts = JSON.parse(contents as string);
 
                 const existing = loadData('prompts');
 
@@ -307,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
         URL.revokeObjectURL(url);
     }
 
-    function toggleDialog(dialog, show) {
+    function toggleDialog(dialog: HTMLElement, show: boolean) {
         dialog.classList.toggle('hidden', !show);
     }
 
@@ -318,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const width = Math.round(display.workArea.width * 0.35);
             const height = display.workArea.height;
             chrome.windows.getCurrent((window) => {
-                chrome.windows.update(window.id, { width: width, height: height });
+                chrome.windows.update(window.id!, { width: width, height: height });
             });
         }
     });
@@ -361,15 +376,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', handleKeyDown);
 
     promptList.addEventListener('click', (event) => {
-        if (event.target.classList.contains('delete')) {
-            currentDeleteIndex = event.target.getAttribute('data-index');
+        const target = event.target as HTMLDivElement;
+        if (target.classList.contains('delete')) {
+            currentDeleteIndex = parseInt(target.getAttribute('data-index')!);
             toggleDialog(deleteDialog, true);
-        } else if (event.target.classList.contains('edit')) {
-            currentEditIndex = event.target.getAttribute('data-index');
+        } else if (target.classList.contains('edit')) {
+            currentEditIndex = parseInt(target.getAttribute('data-index')!);
             editInput.value = loadData('prompts')[currentEditIndex].text;
             toggleDialog(editDialog, true);
-        } else if (event.target.classList.contains('add-tag')) {
-            currentAddTagIndex = event.target.getAttribute('data-index');
+        } else if (target.classList.contains('add-tag')) {
+            currentAddTagIndex = parseInt(target.getAttribute('data-index')!);
             addTagInput.value = ''; // Clear previous value
             toggleDialog(addTagDialog, true);
         }
