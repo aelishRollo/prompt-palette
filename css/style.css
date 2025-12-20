@@ -156,8 +156,16 @@ button:active, .kebab-menu-button:active, .help-menu-button:active, .prompt-item
     background-color: #f39c12; /* Orange */
 }
 
+.prompt-item button.set-shortcut {
+    background-color: #9b59b6; /* Purple */
+}
+
 .prompt-item button.delete {
     background-color: #e74c3c; /* Red */
+}
+
+.prompt-item button.set-shortcut:hover {
+    background-color: #8e44ad; /* Darker Purple */
 }
 
 .prompt-item button.add-tag:hover {
@@ -480,4 +488,99 @@ button:active, .kebab-menu-button:active, .help-menu-button:active, .prompt-item
     display: flex;
     flex-direction: column;
     align-items: center; /* Center content horizontally */
+}
+
+#set-shortcut-dialog.hidden {
+    display: none;
+}
+
+#set-shortcut-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 1000;
+    width: 350px;
+    box-sizing: border-box;
+}
+
+#set-shortcut-dialog h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: center;
+}
+
+#set-shortcut-dialog p {
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    color: #666;
+    text-align: center;
+}
+
+#set-shortcut-dialog input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    background-color: #ecf0f1;
+    color: #333;
+    font-size: 1.2em;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.shortcut-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.shortcut-buttons button {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 0.9em;
+}
+
+#set-shortcut-yes {
+    background-color: #2ecc71; /* Green */
+}
+
+#set-shortcut-yes:hover {
+    background-color: #27ae60; /* Darker Green */
+}
+
+#clear-shortcut {
+    background-color: #f39c12; /* Orange */
+}
+
+#clear-shortcut:hover {
+    background-color: #e67e22; /* Darker Orange */
+}
+
+#set-shortcut-no {
+    background-color: #e74c3c; /* Red */
+}
+
+#set-shortcut-no:hover {
+    background-color: #c0392b; /* Darker Red */
+}
+
+.shortcut-badge {
+    display: inline-block;
+    background-color: #9b59b6; /* Purple */
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-left: 8px;
+    vertical-align: middle;
 }
