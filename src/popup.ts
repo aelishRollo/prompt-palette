@@ -1,6 +1,7 @@
 type SavedPrompt = {
     text: string;
     tags: string[];
+    shortcut?: string;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -33,12 +34,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const addTagConfirmButton = document.getElementById('add-tag-yes') as HTMLButtonElement;
     const addTagCancelButton = document.getElementById('add-tag-no') as HTMLButtonElement;
 
+    const setShortcutDialog = document.getElementById('set-shortcut-dialog') as HTMLDivElement;
+    const shortcutInput = document.getElementById('shortcut-input') as HTMLInputElement;
+    const setShortcutConfirmButton = document.getElementById('set-shortcut-yes') as HTMLButtonElement;
+    const setShortcutCancelButton = document.getElementById('set-shortcut-no') as HTMLButtonElement;
+    const clearShortcutButton = document.getElementById('clear-shortcut') as HTMLButtonElement;
+
     let currentFocusIndex = -1;
     let currentEditIndex = -1;
     let currentDeleteIndex = -1;
     let currentAddTagIndex = -1;
+    let currentSetShortcutIndex = -1;
     let kebabMenuClicked = false;
     let helpMenuClicked = false;
+    let capturingShortcut = false;
 
     function saveData(key: 'prompts', data: SavedPrompt[]) {
         try {
@@ -74,9 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
             promptItem.setAttribute('tabindex', '0');
             promptItem.setAttribute('role', 'button');
             promptItem.setAttribute('aria-pressed', 'false');
+            const shortcutDisplay = prompt.shortcut ? `<span class="shortcut-badge">${prompt.shortcut}</span>` : '';
             promptItem.innerHTML = `
-                <span>${prompt.text}</span>
+                <span>${prompt.text} ${shortcutDisplay}</span>
                 <div class="button-container">
+                    <button class="set-shortcut" data-index="${index}">Set Shortcut</button>
                     <button class="add-tag" data-index="${index}">Add Tag</button>
                     <button class="edit" data-index="${index}">Edit</button>
                     <button class="delete" data-index="${index}">Delete</button>
@@ -150,6 +161,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function setShortcutToPrompt() {
+        const shortcut = shortcutInput.value.trim();
+        if (shortcut !== "") {
+            const prompts = loadData('prompts');
+            // Check if shortcut is already in use
+            const existingPrompt = prompts.find((p, i) => i !== currentSetShortcutIndex && p.shortcut === shortcut);
+            if (existingPrompt) {
+                alert(`Shortcut "${shortcut}" is already assigned to another prompt.`);
+                return;
+            }
+            prompts[currentSetShortcutIndex].shortcut = shortcut;
+            saveData('prompts', prompts);
+            displayPrompts();
+            toggleDialog(setShortcutDialog, false);
+        }
+    }
+
+    function clearShortcut() {
+        const prompts = loadData('prompts');
+        delete prompts[currentSetShortcutIndex].shortcut;
+        saveData('prompts', prompts);
+        displayPrompts();
+        toggleDialog(setShortcutDialog, false);
+    }
+
+    function captureKeyboardShortcut(event: KeyboardEvent) {
+        event.preventDefault();
+        const keys = [];
+        if (event.ctrlKey) keys.push('Ctrl');
+        if (event.altKey) keys.push('Alt');
+        if (event.shiftKey) keys.push('Shift');
+        if (event.metaKey) keys.push('Meta');
+
+        // Don't include modifier keys as the main key
+        if (!['Control', 'Alt', 'Shift', 'Meta'].includes(event.key)) {
+            keys.push(event.key.toUpperCase());
+        }
+
+        if (keys.length > 1) { // Need at least one modifier and one key
+            shortcutInput.value = keys.join('+');
+        }
+    }
+
     function copySelectedPrompts() {
         const selectedPrompts: string[] = [];
         document.querySelectorAll('.prompt-item.selected').forEach(item => {
@@ -192,6 +246,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleKeyDown(event: KeyboardEvent) {
+        // Check for keyboard shortcuts first
+        const keys = [];
+        if (event.ctrlKey) keys.push('Ctrl');
+        if (event.altKey) keys.push('Alt');
+        if (event.shiftKey) keys.push('Shift');
+        if (event.metaKey) keys.push('Meta');
+        if (!['Control', 'Alt', 'Shift', 'Meta'].includes(event.key)) {
+            keys.push(event.key.toUpperCase());
+        }
+
+        const pressedShortcut = keys.join('+');
+
+        // Check if this shortcut matches any prompt
+        const savedPrompts = loadData('prompts');
+        const matchedPrompt = savedPrompts.find(p => p.shortcut === pressedShortcut);
+        if (matchedPrompt) {
+            event.preventDefault();
+            navigator.clipboard.writeText(matchedPrompt.text).then(() => {
+                showFullScreenNotification('Prompt copied!');
+                setTimeout(() => {
+                    window.close();
+                }, 400);
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+            return;
+        }
+
         const prompts = document.querySelectorAll('.prompt-item') as NodeListOf<HTMLDivElement>;
         if (event.key === 'ArrowDown') {
             currentFocusIndex = (currentFocusIndex + 1) % prompts.length;
@@ -223,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function handlePromptClick(event: MouseEvent) {
         const promptItem = event.currentTarget as HTMLDivElement;
         const target = event.target as HTMLDivElement;
-        if (!target.classList.contains('edit') && !target.classList.contains('delete') && !target.classList.contains('add-tag')) {
+        if (!target.classList.contains('edit') && !target.classList.contains('delete') && !target.classList.contains('add-tag') && !target.classList.contains('set-shortcut')) {
             promptItem.classList.toggle('selected');
             const isSelected = promptItem.classList.contains('selected');
             promptItem.setAttribute('aria-pressed', isSelected.toString());
@@ -388,6 +470,13 @@ document.addEventListener('DOMContentLoaded', () => {
             currentAddTagIndex = parseInt(target.getAttribute('data-index')!);
             addTagInput.value = ''; // Clear previous value
             toggleDialog(addTagDialog, true);
+        } else if (target.classList.contains('set-shortcut')) {
+            currentSetShortcutIndex = parseInt(target.getAttribute('data-index')!);
+            const currentShortcut = loadData('prompts')[currentSetShortcutIndex].shortcut || '';
+            shortcutInput.value = currentShortcut;
+            toggleDialog(setShortcutDialog, true);
+            // Enable shortcut capturing
+            capturingShortcut = true;
         }
     });
 
@@ -405,6 +494,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addTagCancelButton) addTagCancelButton.addEventListener('click', () => {
         toggleDialog(addTagDialog, false);
     });
+
+    if (setShortcutConfirmButton) setShortcutConfirmButton.addEventListener('click', setShortcutToPrompt);
+    if (setShortcutCancelButton) setShortcutCancelButton.addEventListener('click', () => {
+        capturingShortcut = false;
+        toggleDialog(setShortcutDialog, false);
+    });
+    if (clearShortcutButton) clearShortcutButton.addEventListener('click', clearShortcut);
+
+    // Capture keyboard shortcuts in the shortcut input
+    if (shortcutInput) {
+        shortcutInput.addEventListener('keydown', (event) => {
+            if (capturingShortcut) {
+                captureKeyboardShortcut(event);
+            }
+        });
+        shortcutInput.addEventListener('focus', () => {
+            capturingShortcut = true;
+        });
+        shortcutInput.addEventListener('blur', () => {
+            capturingShortcut = false;
+        });
+    }
 
     tagFilterSelect.addEventListener('change', displayPrompts);
 
